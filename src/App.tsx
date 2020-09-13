@@ -1,7 +1,9 @@
 import React from 'react';
 import './App.css';
-import HomePage from './pages/home';
-import LoginPage from './pages/login'
+import HomePage from './components/home/home';
+import LoginPage from './components/login/login'
+import NotFound from './components/404page/404';
+import RegisterPage from './register/register';
 
 //Router 
 import {
@@ -13,30 +15,18 @@ import {
   useParams
 } from 'react-router-dom';
 
-
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <ul>
-          <li>
-            <Link to="/home">Home</Link>
-          </li>
-          <li>
-            <Link to="/login">Login</Link>
-          </li>
-        </ul>
-
-      </div>
-      <Switch>
-        <Route path="/home">
-          <HomePage />
-        </Route>
-        <Route path="/login">
-          <LoginPage/>
-        </Route >
-      </Switch>
-    </Router>
+    <div className="app-routes">
+      <Router>
+        <Switch>
+          <Route exact path="/login" component={LoginPage} />
+          <Route exact path="/register" component={RegisterPage} />
+          <Route exact path="/" component={HomePage} />
+          <Route component={NotFound}/> 
+        </Switch>
+      </Router>
+    </div>
   );
 }
 
