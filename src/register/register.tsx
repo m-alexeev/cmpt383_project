@@ -1,6 +1,6 @@
 import './register.css'
 import React, { useState } from 'react';
-import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
+import { Button, FormGroup, FormControl } from "react-bootstrap";
 
 
 function RegisterPage() {
@@ -11,7 +11,7 @@ function RegisterPage() {
 
 
   function validateForm() {
-    return email.length > 0 && password.length > 0 && password == password_match;
+    return email.length > 0 && password.length > 0 && password === password_match;
   }
 
   function handleSubmit(event) {

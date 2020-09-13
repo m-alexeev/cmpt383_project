@@ -1,6 +1,6 @@
 import './login.css';
 import React, { useState } from 'react';
-import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
+import { Button, FormGroup, FormControl } from "react-bootstrap";
 
 
 function LoginPage() {
@@ -21,14 +21,13 @@ function LoginPage() {
   return (
     <div className="Login">
       <header className="login-page">
-
         <form onSubmit={handleSubmit}>
           <p>
             Please Login!
           </p>
           <FormGroup controlId="email" >
             <FormControl
-              placeholder="Enter Email"
+              placeholder="Email"
               autoFocus
               type='email'
               value={email}
@@ -36,12 +35,13 @@ function LoginPage() {
             />
           </FormGroup>
           <FormGroup controlId='password'>
-            <FormControl
-              placeholder="Enter Password"
-              value={password}
-              type='password'
-              onChange={e => setPassword(e.target.value)}
-            />
+              <FormControl
+                placeholder="Password"
+                value={password}
+                type='password'
+                onChange={e => setPassword(e.target.value)}
+              >
+              </FormControl>
           </FormGroup>
           <Button block disabled={!validateForm()} type='submits'>
             Login
