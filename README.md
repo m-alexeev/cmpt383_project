@@ -15,7 +15,7 @@ You will also see any lint errors in the console.
 
 ### `yarn start-api`
 
-Runs the backend server that manages the api calls and connects to the database.
+Runs the backend server that manages the api calls and connects to the database. <br />
 Default port [http://localhost:5000](http://localhost:5000)
 
 
