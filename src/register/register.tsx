@@ -51,7 +51,7 @@ class RegisterPage extends React.Component<IProps,IState>{
   
   handleSubmit(event){
     if (this.validate()){
-     // event.preventDefault(); 
+      event.preventDefault(); 
       this.setState({submitted:true});
     }
 
@@ -128,3 +128,7 @@ class RegisterPage extends React.Component<IProps,IState>{
 }
 
 export default RegisterPage; 
+
+//TODO: Replace the onSubmit with a onClick
+// Add stopPropagation
+// redirect on the callback
