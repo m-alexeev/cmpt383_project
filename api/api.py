@@ -30,6 +30,9 @@ class Note(db.Model):
 
 
 
+@app.route('/register', methods= ['POST'])
+def register():
+    return{'time':datetime.utcnow()}
 
 
 @app.route('/time')

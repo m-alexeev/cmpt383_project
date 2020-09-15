@@ -50,9 +50,8 @@ class RegisterPage extends React.Component<IProps,IState>{
   }
   
   handleSubmit(event){
-
     if (this.validate()){
-      event.preventDefault(); 
+     // event.preventDefault(); 
       this.setState({submitted:true});
     }
 
@@ -118,7 +117,7 @@ class RegisterPage extends React.Component<IProps,IState>{
               >
               </FormControl>
             </FormGroup>
-            <Button onSubmit={this.handleSubmit} type='submit'>
+            <Button block onSubmit={this.handleSubmit} type='submit'>
               Register
           </Button>
           </form>

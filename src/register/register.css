@@ -1,11 +1,11 @@
-@media all and (min-width: 320px) {
+@media all and (min-width: 480px) {
     .Register {
       padding: 60px 0;
     }
     
     .Register form {
       border: 1px solid;
-      padding: 20px 60px  ;
+      padding: 5vh 5vw ;
       background-color: #dfe0e2;
       margin: 0 auto;
       max-width: 480px;
