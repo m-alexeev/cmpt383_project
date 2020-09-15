@@ -1,6 +1,6 @@
-from datetime import datetime
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
@@ -31,6 +31,7 @@ class Note(db.Model):
 
 
 
+
 @app.route('/time')
 def get_cur_time():
-    return {'time': datetime.utcnow}
+    return {'time': datetime.utcnow()}
