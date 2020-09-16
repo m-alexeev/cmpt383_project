@@ -4,22 +4,22 @@ import { Button, FormGroup, FormControl } from "react-bootstrap";
 import { Console } from 'console';
 
 
-interface IProps{
+interface IProps {
 
 }
 
-interface IState{
-  user:{
+interface IState {
+  user: {
     email: string;
     password: string;
-    conf_password:string
+    conf_password: string
 
   };
-  submitted:boolean
+  submitted: boolean
 }
 
 
-class RegisterPage extends React.Component<IProps,IState>{
+class RegisterPage extends React.Component<IProps, IState>{
 
   constructor(props) {
     super(props);
@@ -28,7 +28,7 @@ class RegisterPage extends React.Component<IProps,IState>{
       user: {
         email: '',
         password: '',
-        conf_password:'',
+        conf_password: '',
       },
       submitted: false
     }
@@ -38,47 +38,59 @@ class RegisterPage extends React.Component<IProps,IState>{
 
   }
 
-  handleChange(event){
-      const {name, value} = event.target;
-      const {user} = this.state; 
-      this.setState({
-        user: {
-          ...user,
-          [name]: value
+  handleChange(event) {
+    const { name, value } = event.target;
+    const { user } = this.state;
+    this.setState({
+      user: {
+        ...user,
+        [name]: value
       }
-      });
+    });
   }
-  
-  handleSubmit(event){
-    if (this.validate()){
-      event.preventDefault(); 
-      this.setState({submitted:true});
+
+  handleSubmit(event) {
+    event.stopPropagation();
+    if (this.validate()) {
+      event.preventDefault();
+      this.setState({ submitted: true });
+      fetch('/register', {
+        method: 'post',
+        body: JSON.stringify(this.state.user)
+      }).then(function (response) {
+        return response.json();
+      }).then(function (data) {
+
+        console.log(data);
+      });
     }
 
   }
 
-  validate(){
-      let isValid = true;
-      let user = this.state.user; 
-      if (user.password !== user.conf_password){
-        isValid = false; 
-      }
-      if (user.password.length === 0){
-        isValid = false;
-      }
-      if (user.conf_password.length ===0){
-        isValid = false;
-      }
-      console.log("Test");
+  validate() {
+    let isValid = true;
+    let user = this.state.user;
+    if (user.password !== user.conf_password) {
+      isValid = false;
+    }
+    if (user.password.length === 0) {
+      isValid = false;
+    }
+    if (user.conf_password.length === 0) {
+      isValid = false;
+    }
+    if (user.email.length === 0) {
+      isValid = false;
+    }
 
     return isValid;
   }
 
-  
+
 
 
   render() {
-    const {user,submitted} =  this.state;
+    const { user, submitted } = this.state;
     return (
       <div className="Register">
         <header className="register-page">
@@ -89,7 +101,7 @@ class RegisterPage extends React.Component<IProps,IState>{
         </p>
             <FormGroup controlId="email" >
               <FormControl
-                name = 'email'
+                name='email'
                 placeholder="Email"
                 autoFocus
                 type='email'
@@ -99,7 +111,7 @@ class RegisterPage extends React.Component<IProps,IState>{
             </FormGroup>
             <FormGroup controlId='password'>
               <FormControl
-                name = 'password'
+                name='password'
                 placeholder="Password"
                 value={user.password}
                 type='password'
@@ -109,7 +121,7 @@ class RegisterPage extends React.Component<IProps,IState>{
             </FormGroup>
             <FormGroup controlId='password-match'>
               <FormControl
-                name = 'conf_password'
+                name='conf_password'
                 placeholder="Confirm Password"
                 value={user.conf_password}
                 type='password'
@@ -117,17 +129,18 @@ class RegisterPage extends React.Component<IProps,IState>{
               >
               </FormControl>
             </FormGroup>
-            <Button block onSubmit={this.handleSubmit} type='submit'>
-              Register
-          </Button>
+
           </form>
+          <Button block onClick={this.handleSubmit} >
+            Register
+          </Button>
         </header>
       </div>
     )
   }
 }
 
-export default RegisterPage; 
+export default RegisterPage;
 
 //TODO: Replace the onSubmit with a onClick
 // Add stopPropagation

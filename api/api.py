@@ -1,11 +1,16 @@
-from flask import Flask
+from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime 
+import json
+from json import JSONEncoder
+import hashlib
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 db = SQLAlchemy(app)
 
+
+db.create_all()
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -16,6 +21,8 @@ class User(db.Model):
 
     def __repr__(self):
         return f"User('{self.email}', '{self.image_file}')"
+
+
 
 
 class Note(db.Model):
@@ -30,9 +37,56 @@ class Note(db.Model):
 
 
 
+class JsonEncoder(JSONEncoder):
+    def default(self, o):
+        return o.__dict__
+
+
+
+
+@app.route('/login', methods = ['POST'])
+def login():
+    req = request.data.decode('utf-8')
+    user_req = json.loads(req)
+
+    
+    user = User.query.filter_by(email = user_req['email']).first()
+
+    
+    salt = 'bounce'
+    pwd = user_req['password'] + salt
+    
+    hashedPwd = hashlib.md5(pwd.encode())
+    hashedPwd = hashedPwd.hexdigest()
+
+    if (user.password == hashedPwd):
+        return {'user': user.email}, 200
+    else:
+        return {'err': "Incorrect Email or Password"}, 200
+
+
 @app.route('/register', methods= ['POST'])
 def register():
-    return {'time':datetime.utcnow()}, 200
+    req = request.data.decode('utf-8')
+    user_req = json.loads(req)
+    #print(user['email'])
+
+    user = User.query.filter_by(email = user_req['email']).first()
+    if (user != None):
+        return {'err': 'email already taken'}
+    
+    
+    salt = 'bounce'
+    pwd = user_req['password'] + salt
+
+    hashedPwd = hashlib.md5(pwd.encode())
+    hashedPwd = hashedPwd.hexdigest()
+
+    newUser = User(email=user_req['email'], password=hashedPwd)
+    db.session.add(newUser)
+    db.session.commit()    
+
+    return {'user':newUser.email}, 200
 
 
 @app.route('/time')

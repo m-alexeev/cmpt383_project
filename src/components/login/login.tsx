@@ -3,53 +3,120 @@ import React, { useState } from 'react';
 import { Button, FormGroup, FormControl } from "react-bootstrap";
 
 
-function LoginPage() {
+interface IProps {
+
+}
+
+interface IState {
+  user: {
+    email: string;
+    password: string;
+  }
+  submitted: boolean
+}
 
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+class LoginPage extends React.Component<IProps, IState>{
 
+  constructor(props) {
+    super(props);
 
-  function validateForm() {
-    return email.length > 0 && password.length > 0;
+    this.state = {
+      user: {
+        email: '',
+        password: '',
+      },
+      submitted: false
+    }
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+
   }
 
-  function handleSubmit(event) {
-    event.preventDefault();
+  handleChange(event) {
+    const { name, value } = event.target;
+    const { user } = this.state;
+    this.setState({
+      user: {
+        ...user,
+        [name]: value
+      }
+    });
   }
 
-  return (
-    <div className="Login">
-      <header className="login-page">
-        <form onSubmit={handleSubmit}>
-          <p>
-            Please Login!
+
+  handleSubmit(event) {
+    event.stopPropagation();
+    if (this.validate()) {
+      event.preventDefault();
+      this.setState({ submitted: true });
+      fetch('/login', {
+        method : 'post',
+        body: JSON.stringify(this.state.user)
+      }).then(function (response) {
+        return response.json();
+      }).then(function (data) {
+        console.log(data);
+        
+      });
+    }
+  }
+
+
+  validate() {
+    let isValid = true;
+    let user = this.state.user;
+
+    if (user.password.length === 0) {
+      isValid = false;
+    }
+
+    if (user.email.length === 0) {
+      isValid = false;
+    }
+    return isValid;
+  }
+
+
+  render() {
+    const user = this.state.user;
+    return (
+      <div className="Login">
+        <header className="login-page">
+          <form onSubmit={this.handleSubmit}  method= 'post'>
+            <p>
+              Please Login!
           </p>
-          <FormGroup controlId="email" >
-            <FormControl
-              placeholder="Email"
-              autoFocus
-              type='email'
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-            />
-          </FormGroup>
-          <FormGroup controlId='password'>
+            <FormGroup controlId="email" >
+              <FormControl
+                placeholder="Email"
+                autoFocus
+                name = 'email'
+                type='email'
+                value={user.email}
+                onChange={this.handleChange}
+              />
+            </FormGroup>
+            <FormGroup controlId='password'>
               <FormControl
                 placeholder="Password"
-                value={password}
+                name = 'password'
+                value={user.password}
                 type='password'
-                onChange={e => setPassword(e.target.value)}
+                onChange={this.handleChange}
               >
               </FormControl>
-          </FormGroup>
-          <Button block disabled={!validateForm()} type='submits'>
+            </FormGroup>
+
+          </form>
+          <Button block onClick={this.handleSubmit} type='submit'>
             Login
           </Button>
-        </form>
-      </header>
-    </div>
-  )
+        </header>
+      </div>
+    )
+  }
 }
 
 export default LoginPage; 
