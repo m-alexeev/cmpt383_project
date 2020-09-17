@@ -2,33 +2,48 @@
     .Login {
       padding: 60px 0;
     }
+
+    .LoginBox{
+        border: 1px solid;
+        padding: 5vh 5vw ;
+        background-color: #dfe0e2;
+        margin: 0 auto;
+        max-width: 480px;
+        width: auto;
+        border-radius: 10px;
+    }
+
+
+
+    .Login{
+      justify-content: center;
+      background-color: #282c34;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
     
-    .Login form {
-      border: 1px solid;
-      padding: 5vh 5vw ;
-      background-color: #dfe0e2;
-      margin: 0 auto;
-      max-width: 480px;
-      border-radius: 10px;
+    .Login h2{
+        margin-bottom: 80px;
+        text-align: center;
+        font-size: 24px;
+    }
+    
+
+    .form-group{
+      min-width: 320px;
+    }
+
+    .Login .error{
+      margin-bottom: 80px;
+      text-align: center;
+      color: red;
+    }
+    
+    .Login button{
+      margin: auto;
+      width: 80%;
+      align-items:center;
     }
   }
 
-.Login{
-  justify-content: center;
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.Login p{
-    margin-bottom: 80px;
-    text-align: center;
-    font-size: 24px;
-}
-
-.Login button{
-  margin: 3vh auto;
-  width: 80%;
-  align-items:center;
-}

@@ -1,7 +1,6 @@
 import './register.css'
 import React from 'react';
-import { Button, FormGroup, FormControl } from "react-bootstrap";
-import { Console } from 'console';
+import {Form, Button, FormGroup, FormControl } from "react-bootstrap";
 
 
 interface IProps {
@@ -12,9 +11,13 @@ interface IState {
   user: {
     email: string;
     password: string;
-    conf_password: string
+    conf_password: string;
 
   };
+  errors :{
+    email: string;
+    conf_password: string;
+  }
   submitted: boolean
 }
 
@@ -29,6 +32,10 @@ class RegisterPage extends React.Component<IProps, IState>{
         email: '',
         password: '',
         conf_password: '',
+      },
+      errors: {
+        email: '',
+        conf_password : '',
       },
       submitted: false
     }
@@ -47,6 +54,8 @@ class RegisterPage extends React.Component<IProps, IState>{
         [name]: value
       }
     });
+
+   
   }
 
   handleSubmit(event) {
@@ -54,24 +63,28 @@ class RegisterPage extends React.Component<IProps, IState>{
     if (this.validate()) {
       event.preventDefault();
       this.setState({ submitted: true });
-      fetch('/register', {
-        method: 'post',
-        body: JSON.stringify(this.state.user)
-      }).then(function (response) {
-        return response.json();
-      }).then(function (data) {
+      // fetch('/register', {
+      //   method: 'post',
+      //   body: JSON.stringify(this.state.user)
+      // }).then(function (response) {
+      //   return response.json();
+      // }).then(function (data) {
 
-        console.log(data);
-      });
+      //   console.log(data);
+      // });
     }
 
   }
 
+
+
   validate() {
+    let err = this.state.errors
     let isValid = true;
     let user = this.state.user;
     if (user.password !== user.conf_password) {
       isValid = false;
+      err.conf_password = 'Passwords dont match';
     }
     if (user.password.length === 0) {
       isValid = false;
@@ -82,6 +95,7 @@ class RegisterPage extends React.Component<IProps, IState>{
     if (user.email.length === 0) {
       isValid = false;
     }
+    err.conf_password = '';
 
     return isValid;
   }
@@ -90,15 +104,16 @@ class RegisterPage extends React.Component<IProps, IState>{
 
 
   render() {
-    const { user, submitted } = this.state;
+    const { user } = this.state;
+    const err = this.state.errors;
     return (
       <div className="Register">
-        <header className="register-page">
+        <header className="RegisterBox">
 
           <form onSubmit={this.handleSubmit} method="post">
-            <p>
+            <h2>
               Register!
-        </p>
+           </h2>
             <FormGroup controlId="email" >
               <FormControl
                 name='email'
@@ -126,10 +141,14 @@ class RegisterPage extends React.Component<IProps, IState>{
                 value={user.conf_password}
                 type='password'
                 onChange={this.handleChange}
+                isInvalid={!!err.conf_password}
+
               >
               </FormControl>
+              <Form.Control.Feedback type = 'invalid'>
+                {err.conf_password}
+              </Form.Control.Feedback>
             </FormGroup>
-
           </form>
           <Button block onClick={this.handleSubmit} >
             Register

@@ -51,7 +51,8 @@ def login():
 
     
     user = User.query.filter_by(email = user_req['email']).first()
-
+    if (user == None):
+        return {'err': 'Incorrect Email or Password'}, 200
     
     salt = 'bounce'
     pwd = user_req['password'] + salt
@@ -60,7 +61,7 @@ def login():
     hashedPwd = hashedPwd.hexdigest()
 
     if (user.password == hashedPwd):
-        return {'user': user.email}, 200
+        return {'user': user.email, 'redirect': '/'}, 200
     else:
         return {'err': "Incorrect Email or Password"}, 200
 
