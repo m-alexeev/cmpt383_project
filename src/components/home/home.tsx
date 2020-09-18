@@ -2,15 +2,19 @@ import React from 'react';
 import './home.css';
 import { useEffect, useState } from 'react';
 
-function HomePage() {
+export default function HomePage() {
 
   const [currentTime, setCurrentTime] = useState(1);
-
+  const [curUser, setCurUser] = useState("");
 
   useEffect(()=> {
     fetch('/time').then(res=> res.json()).then(data=>{
       setCurrentTime(data.time);
     });
+    fetch('/getUser').then(res => res.json()).then(data =>{
+      setCurUser(data.user);
+    })
+
   }, [])
 
   return (
@@ -22,9 +26,10 @@ function HomePage() {
         <p>
           The current time is {currentTime}
         </p>
+        <p>
+          The curent user is {curUser}
+        </p>
       </header>
     </div>
   )
 }
-
-export default HomePage; 

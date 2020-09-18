@@ -1,13 +1,17 @@
-from flask import Flask, request
+from flask import Flask, request, session
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime 
 import json
 from json import JSONEncoder
 import hashlib
 
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+app.config['SECRET_KEY'] = 'd2047e924a7c6e4f34f8134e17c7e66f'
 db = SQLAlchemy(app)
+
+
 
 
 db.create_all()
@@ -23,8 +27,6 @@ class User(db.Model):
         return f"User('{self.email}', '{self.image_file}')"
 
 
-
-
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
@@ -34,12 +36,6 @@ class Note(db.Model):
 
     def __repr__(self):
         return f"User('{self.title}', '{self.date_created}')"
-
-
-
-class JsonEncoder(JSONEncoder):
-    def default(self, o):
-        return o.__dict__
 
 
 
@@ -61,9 +57,11 @@ def login():
     hashedPwd = hashedPwd.hexdigest()
 
     if (user.password == hashedPwd):
+        session['user'] = user_req['email']
         return {'user': user.email, 'redirect': '/'}, 200
     else:
         return {'err': "Incorrect Email or Password"}, 200
+
 
 
 @app.route('/register', methods= ['POST'])
@@ -87,9 +85,23 @@ def register():
     db.session.add(newUser)
     db.session.commit()    
 
+
+    session
     return {'user':newUser.email}, 200
+
+
+
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+
+
+
+@app.route('/getUser')
+def get_cur_user():
+    return {"user": session['user']},200
 
 
 @app.route('/time')
 def get_cur_time():
-    return {'time': datetime.utcnow()}
+    return {'time': datetime.utcnow()},200

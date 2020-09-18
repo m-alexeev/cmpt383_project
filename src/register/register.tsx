@@ -1,166 +1,141 @@
 import './register.css'
-import React from 'react';
-import {Form, Button, FormGroup, FormControl } from "react-bootstrap";
+import React, { useEffect, useState } from 'react';
+import { Form, Button, FormGroup, FormControl } from "react-bootstrap";
+import {  useHistory } from 'react-router-dom';
 
 
-interface IProps {
 
-}
+export default function RegisterPage() {
 
-interface IState {
-  user: {
-    email: string;
-    password: string;
-    conf_password: string;
 
-  };
-  errors :{
-    email: string;
-    conf_password: string;
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [conf_password, setConfPassword] = useState("");
+  const [emailErr, setEmailError] = useState("");
+  const [pwdError, setPwdError] = useState("");
+  const [confPwdError, setConfPwdError] = useState("");
+
+
+  const history = useHistory();
+
+
+  function handleSubmit(e) {
+
+    e.stopPropagation();
+    if (validatePwd() && validateEmail()) {
+      e.preventDefault();
+      fetch('/register', {
+        method: 'post',
+        body: JSON.stringify({"email":email, "password":password})
+      }).then(function (response) {
+        return response.json();
+      }).then(function (data) {
+        
+        console.log(data);
+      });
+    }
   }
-  submitted: boolean
-}
+
+  useEffect(() => {
+    validatePwd();
+    validateEmail();
+  }, [password, conf_password, email]);
 
 
-class RegisterPage extends React.Component<IProps, IState>{
+  //Password Validation
+  function validatePwd() {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      user: {
-        email: '',
-        password: '',
-        conf_password: '',
-      },
-      errors: {
-        email: '',
-        conf_password : '',
-      },
-      submitted: false
+    if ( password.length < 8 && password.length > 0) {
+      setPwdError("Password must be longer than 8 characters");
+      return false;
+    }
+    else {
+      setPwdError('');
+    }
+    if (conf_password.length > 0 && password !== conf_password) {
+      setConfPwdError("Passwords dont match");
+      return false;
+    } else {
+      setConfPwdError("");
+    }
+    if (conf_password.length === 0 || password.length === 0){
+      return false; 
     }
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-
-  }
-
-  handleChange(event) {
-    const { name, value } = event.target;
-    const { user } = this.state;
-    this.setState({
-      user: {
-        ...user,
-        [name]: value
-      }
-    });
-
-   
-  }
-
-  handleSubmit(event) {
-    event.stopPropagation();
-    if (this.validate()) {
-      event.preventDefault();
-      this.setState({ submitted: true });
-      // fetch('/register', {
-      //   method: 'post',
-      //   body: JSON.stringify(this.state.user)
-      // }).then(function (response) {
-      //   return response.json();
-      // }).then(function (data) {
-
-      //   console.log(data);
-      // });
-    }
-
+    return true;
   }
 
 
-
-  validate() {
-    let err = this.state.errors
-    let isValid = true;
-    let user = this.state.user;
-    if (user.password !== user.conf_password) {
-      isValid = false;
-      err.conf_password = 'Passwords dont match';
+  //Email Validation
+  function validateEmail() {
+    if (email.length === 0 || /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)) {
+      setEmailError("");
     }
-    if (user.password.length === 0) {
-      isValid = false;
+    else {
+      setEmailError("Email is Invalid");
+      return false;
     }
-    if (user.conf_password.length === 0) {
-      isValid = false;
-    }
-    if (user.email.length === 0) {
-      isValid = false;
-    }
-    err.conf_password = '';
-
-    return isValid;
+    return true;
   }
 
 
 
 
-  render() {
-    const { user } = this.state;
-    const err = this.state.errors;
-    return (
-      <div className="Register">
-        <header className="RegisterBox">
 
-          <form onSubmit={this.handleSubmit} method="post">
-            <h2>
-              Register!
+  return (
+    <div className="Register">
+      <div className="RegisterBox">
+
+        <Form method="post">
+          <h2>
+            Register!
            </h2>
-            <FormGroup controlId="email" >
-              <FormControl
-                name='email'
-                placeholder="Email"
-                autoFocus
-                type='email'
-                value={user.email}
-                onChange={this.handleChange}
-              />
-            </FormGroup>
-            <FormGroup controlId='password'>
-              <FormControl
-                name='password'
-                placeholder="Password"
-                value={user.password}
-                type='password'
-                onChange={this.handleChange}
-              >
-              </FormControl>
-            </FormGroup>
-            <FormGroup controlId='password-match'>
-              <FormControl
-                name='conf_password'
-                placeholder="Confirm Password"
-                value={user.conf_password}
-                type='password'
-                onChange={this.handleChange}
-                isInvalid={!!err.conf_password}
-
-              >
-              </FormControl>
-              <Form.Control.Feedback type = 'invalid'>
-                {err.conf_password}
-              </Form.Control.Feedback>
-            </FormGroup>
-          </form>
-          <Button block onClick={this.handleSubmit} >
-            Register
+          <FormGroup controlId="email" >
+            <FormControl
+              name='email'
+              placeholder="Email"
+              autoFocus
+              type='email'
+              onChange={e => setEmail(e.target.value)}
+              isInvalid={!!emailErr}
+            />
+            <Form.Control.Feedback type='invalid'>
+              {emailErr}
+            </Form.Control.Feedback>
+          </FormGroup>
+          <FormGroup controlId='password'>
+            <FormControl
+              name='password'
+              placeholder="Password"
+              type='password'
+              onChange={e => setPassword(e.target.value)}
+              isInvalid={!!pwdError}
+            />
+            <Form.Control.Feedback type='invalid'>
+              {pwdError}
+            </Form.Control.Feedback>
+          </FormGroup>
+          <FormGroup controlId='password-match'>
+            <FormControl
+              name='conf_password'
+              placeholder="Confirm Password"
+              type='password'
+              onChange={e => setConfPassword(e.target.value)}
+              isInvalid={!!confPwdError}
+            >
+            </FormControl>
+            <Form.Control.Feedback type='invalid'>
+              {confPwdError}
+            </Form.Control.Feedback>
+          </FormGroup>
+        </Form>
+        <Button block onClick={e => handleSubmit(e)} type='submit' >
+          Register
           </Button>
-        </header>
+          <p className = 'register'>
+          Already have an account? <a onClick = {() => history.push('/login')} >Login!</a>
+          </p>
       </div>
-    )
-  }
+    </div>
+  )
 }
-
-export default RegisterPage;
-
-//TODO: Replace the onSubmit with a onClick
-// Add stopPropagation
-// redirect on the callback

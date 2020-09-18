@@ -1,149 +1,100 @@
 import './login.css';
-import React from 'react';
-import { Button, FormGroup, FormControl } from "react-bootstrap";
-import {Redirect} from 'react-router-dom';
-import userEvent from '@testing-library/user-event';
-
-interface IProps {
-
-}
-
-interface IState {
-  user: {
-    email: string;
-    password: string;
-  }
-  submitted: boolean
-  error: string
-  redirect : string
-}
+import React, { useState } from 'react';
+import {Form, Button, FormGroup, FormControl } from "react-bootstrap";
+import {  useHistory } from 'react-router-dom';
 
 
-class LoginPage extends React.Component<IProps, IState>{
+export default function LoginPage() {
 
-  constructor(props) {
-    super(props);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [err, setError] = useState("");
 
-    this.state = {
 
-      user: {
-        email: '',
-        password: '',
-      },
-      redirect : '',
-      submitted: false,
-      error: '',
-    }
+  let history = useHistory(); 
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
 
-  }
-
-  handleChange(event) {
-    const { name, value } = event.target;
-    const { user } = this.state;
-    this.setState({
-      user: {
-        ...user,
-        [name]: value
+  async function handleSubmit(e) {
+    e.stopPropagation();
+    if (validate()) {
+      e.preventDefault();
+      let data = await fetch_request();
+  
+      console.log(await data);
+      if (await data['user'] != null){
+        history.push('/');
       }
-    });
-  }
-
-
-  async handleSubmit(event) {
-    event.stopPropagation();
-    if (this.validate()) {
-      event.preventDefault();
-      this.setState({ submitted: true });
-
-      
-      let data = await this.fetch_request();
-      
-      //Set the error
-      this.setState({
-        error: await data['err'],
-        redirect : await data['redirect']
-      });
+      if (await data['err'] != null){
+        setError(data['err']);
+      }
     }
   }
 
 
-  async fetch_request() {
+
+  async function fetch_request() {
     let data = await fetch('/login', {
       method: 'post',
-      body: JSON.stringify(this.state.user)
+      body: JSON.stringify({ "email": email, "password": password })
     }).then(function (response) {
       return response.json();
     }).then(function (data) {
       return data;
     }).catch(error => console.warn(error));
-    
+
     return data;
   }
 
 
 
-  validate() {
+  function validate() {
     let isValid = true;
-    let user = this.state.user;
 
-    if (user.password.length === 0) {
+    if (password.length === 0) {
       isValid = false;
     }
-    if (user.email.length === 0) {
+    if (email.length === 0) {
       isValid = false;
     }
     return isValid;
   }
 
 
-  render() {
-    
-    const user = this.state.user;
-    let err = this.state.error;
-
-    if (this.state.redirect){
-      return <Redirect to = {this.state.redirect}/>
-    }
-
-    return (
-      <div className="Login">
-        <div className="LoginBox">
-          <form onSubmit={this.handleSubmit} method='post'>
-            <h2>
-              Please Login! 
+  return (
+    <div className="Login">
+      <div className="LoginBox">
+        <Form method='post'>
+          <h2>
+            Please Login!
           </h2>
-            <FormGroup controlId="email" >
-              <FormControl
-                placeholder="Email"
-                autoFocus
-                name='email'
-                type='email'
-                value={user.email}
-                onChange={this.handleChange}
-                />
-            </FormGroup>
-            <FormGroup controlId='password'>
-              <FormControl
-                placeholder="Password"
-                name='password'
-                value={user.password}
-                type='password'
-                onChange={this.handleChange}
-              >
-              </FormControl>
-            </FormGroup>
-            <p className = 'error'>{err}</p>
-          </form>
-          <Button block onClick={this.handleSubmit} type='submit'>
-            Login
+          <FormGroup controlId="email" >
+            <FormControl
+              placeholder="Email"
+              autoFocus
+              name='email'
+              type='email'
+              onChange={e => setEmail(e.target.value)}
+            />
+          </FormGroup>
+          <FormGroup controlId='password'>
+            <FormControl
+              placeholder="Password"
+              name='password'
+              value={password}
+              type='password'
+              onChange={e => setPassword(e.target.value)}
+            >
+            </FormControl>
+          </FormGroup>
+          <p className='error'>{err}</p>
+        </Form>
+        <Button block onClick={e => handleSubmit(e)} type='submit'>
+          Login
           </Button>
-        </div>
+        <p className = 'register'>
+          Don't have an account? <a onClick = {() => history.push('/register')} >Register!</a>
+          </p>
       </div>
-    )
-  }
+    </div>
+  )
 }
-
-export default LoginPage; 

@@ -45,5 +45,19 @@
       width: 80%;
       align-items:center;
     }
+
+    .register{
+      margin-top: 10px;
+      text-align: center;
+      font-size: small;
+    }
+    .register a{
+      font-weight: 600;
+    }
+
+    .register a:hover{
+      cursor: pointer;
+    }
+
   }
 
