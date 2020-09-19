@@ -1,63 +1,57 @@
-@media all and (min-width: 480px) {
-    .Login {
-      padding: 60px 0;
-    }
+.Login {
+  padding: 60px 0;
+}
 
-    .LoginBox{
-        border: 1px solid;
-        padding: 5vh 5vw ;
-        background-color: #dfe0e2;
-        margin: 0 auto;
-        max-width: 480px;
-        width: auto;
-        border-radius: 10px;
-    }
+.LoginBox {
+  border: 1px solid;
+  padding: 5vh 5vw;
+  background-color: #dfe0e2;
+  width: 520px;
+  margin: 0 auto;
+  width: auto;
+  border-radius: 10px;
+}
+
+.Login {
+  justify-content: center;
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.Login h2 {
+  margin-bottom: 80px;
+  text-align: center;
+  font-size: 24px;
+}
+
+.form-group {
+  min-width: 320px;
+}
+
+.Login .error {
+  text-align: center;
+  color: red;
+}
+
+.Login button {
+  margin: auto;
+  width: 80%;
+  align-items: center;
+}
 
 
+.register {
+  margin-top: 10px;
+  text-align: center;
+  font-size: small;
+}
 
-    .Login{
-      justify-content: center;
-      background-color: #282c34;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .Login h2{
-        margin-bottom: 80px;
-        text-align: center;
-        font-size: 24px;
-    }
-    
+.link {
+  font-weight: 600;
+}
 
-    .form-group{
-      min-width: 320px;
-    }
-
-    .Login .error{
-      margin-bottom: 80px;
-      text-align: center;
-      color: red;
-    }
-    
-    .Login button{
-      margin: auto;
-      width: 80%;
-      align-items:center;
-    }
-
-    .register{
-      margin-top: 10px;
-      text-align: center;
-      font-size: small;
-    }
-    .register a{
-      font-weight: 600;
-    }
-
-    .register a:hover{
-      cursor: pointer;
-    }
-
-  }
-
+.link:hover {
+  cursor: pointer;
+}

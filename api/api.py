@@ -57,7 +57,9 @@ def login():
     hashedPwd = hashedPwd.hexdigest()
 
     if (user.password == hashedPwd):
-        session['user'] = user_req['email']
+        username = user_req['email'].split('@')
+        username = username[0]
+        session['user'] = username
         return {'user': user.email, 'redirect': '/'}, 200
     else:
         return {'err': "Incorrect Email or Password"}, 200
@@ -91,17 +93,17 @@ def register():
 
 
 
-@app.route('/logout')
+@app.route('/signout')
 def logout():
     session.pop('user', None)
+    return {}, 200
 
 
 
 @app.route('/getUser')
 def get_cur_user():
-    return {"user": session['user']},200
+    if (session.get('user')):
+        return {"user": session['user']},200
+    else:
+        return {'redirect': 'true'}
 
-
-@app.route('/time')
-def get_cur_time():
-    return {'time': datetime.utcnow()},200

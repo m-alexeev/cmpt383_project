@@ -1,5 +1,5 @@
 import './register.css'
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Form, Button, FormGroup, FormControl } from "react-bootstrap";
 import {  useHistory } from 'react-router-dom';
 
@@ -36,9 +36,24 @@ export default function RegisterPage() {
     }
   }
 
+
+  const isAuth = useCallback(async () =>{
+    fetch("/getUser")
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.user !== undefined) {
+          history.push('/');
+      }
+    });
+  }, [history]);
+  
+
+
   useEffect(() => {
+    isAuth(); 
     validatePwd();
     validateEmail();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [password, conf_password, email]);
 
 
@@ -77,9 +92,6 @@ export default function RegisterPage() {
     }
     return true;
   }
-
-
-
 
 
   return (
@@ -133,7 +145,7 @@ export default function RegisterPage() {
           Register
           </Button>
           <p className = 'register'>
-          Already have an account? <a onClick = {() => history.push('/login')} >Login!</a>
+          Already have an account? <p className='link' onClick = {() => history.push('/login')} >Login!</p>
           </p>
       </div>
     </div>

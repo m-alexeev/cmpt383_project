@@ -1,35 +1,39 @@
-@media all and (min-width: 480px) {
-    .Register {
-      padding: 60px 0;
-    }
-    
-    .RegisterBox {
-      border: 1px solid;
-      padding: 5vh 5vw ;
-      background-color: #dfe0e2;
-      margin: 0 auto;
-      max-width: 480px;
-      border-radius: 10px;
-    }
+.Register {
+  padding: 60px 0;
+}
 
-    .Register{
-      justify-content: center;
-      background-color: #282c34;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .Register h2{
-        margin-bottom: 80px;
-        text-align: center;
-        font-size: 24px;
-    }
-    
-    .Register button{
-      margin: auto;
-      width: 80%;
-      align-items:center;
-    }
-  }
+.RegisterBox {
+  border: 1px solid;
+  padding: 5vh 5vw;
+  background-color: #dfe0e2;
+  margin: 0 auto;
+  border-radius: 10px;
+}
 
+.Register {
+  justify-content: center;
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.Register h2 {
+  margin-bottom: 80px;
+  text-align: center;
+  font-size: 24px;
+}
+
+.Register button {
+  margin: auto;
+  width: 80%;
+  align-items: center;
+}
+
+.link {
+  font-weight: 600;
+}
+
+.link:hover {
+  cursor: pointer;
+}

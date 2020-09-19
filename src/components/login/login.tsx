@@ -1,7 +1,7 @@
 import './login.css';
-import React, { useState } from 'react';
-import {Form, Button, FormGroup, FormControl } from "react-bootstrap";
-import {  useHistory } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Form, Button, FormGroup, FormControl } from "react-bootstrap";
+import { useHistory } from 'react-router-dom';
 
 
 export default function LoginPage() {
@@ -11,7 +11,27 @@ export default function LoginPage() {
   const [err, setError] = useState("");
 
 
-  let history = useHistory(); 
+  let history = useHistory();
+
+
+
+  const isAuth = useCallback(async () =>{
+    fetch("/getUser")
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.user !== undefined) {
+          history.push('/');
+      }
+    });
+  }, [history]);
+
+
+
+  useEffect(() => {
+    isAuth();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
+
 
 
   async function handleSubmit(e) {
@@ -19,17 +39,16 @@ export default function LoginPage() {
     if (validate()) {
       e.preventDefault();
       let data = await fetch_request();
-  
+
       console.log(await data);
-      if (await data['user'] != null){
+      if (await data['user'] != null) {
         history.push('/');
       }
-      if (await data['err'] != null){
+      if (await data['err'] != null) {
         setError(data['err']);
       }
     }
   }
-
 
 
   async function fetch_request() {
@@ -46,7 +65,6 @@ export default function LoginPage() {
   }
 
 
-
   function validate() {
     let isValid = true;
 
@@ -58,6 +76,7 @@ export default function LoginPage() {
     }
     return isValid;
   }
+
 
 
   return (
@@ -91,9 +110,9 @@ export default function LoginPage() {
         <Button block onClick={e => handleSubmit(e)} type='submit'>
           Login
           </Button>
-        <p className = 'register'>
-          Don't have an account? <a onClick = {() => history.push('/register')} >Register!</a>
-          </p>
+        <p className='register'>
+          Don't have an account? <p className='link' onClick={() => history.push('/register')} >Register!</p>
+        </p>
       </div>
     </div>
   )
