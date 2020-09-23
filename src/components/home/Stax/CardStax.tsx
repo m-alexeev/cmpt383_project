@@ -1,8 +1,7 @@
 import './CardStax.css';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from 'react-bootstrap';
 import Card from './Card/Card';
-import { title } from 'process';
 
 
 class Note {
@@ -28,18 +27,22 @@ export default function CardStax() {
     let note3 = new Note("Note3", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", date.toUTCString()); 
     //   const [cards , setCards ] = useState([]); 
 
-    let notes = [note1,note2,note3]; 
+    const  [notes, setNotes] = useState([note1,note2,note3]); 
+
 
 
     return (
-        <div className='layout'>
-                <Button>Create Card</Button>
+        <div className='card-stax'>
+                <Button onClick = {() => setNotes( [...notes, note1]) } >Create Card</Button>
+               
                 <div className="container-fluid d-flex ">
-                   <Card title={note1.title} txt = {note1.message} date = {note1.date} />
-                   <Card title={note2.title} txt = {note2.message} date = {note2.date} />
-                   <Card title={note3.title} txt = {note3.message} date = {note3.date} />
+                    <div className = 'row'>
+                        {notes.map((note) =>{
+                            return <Card title = {note.title} txt = {note.message} date = {note.date} />
+                        })
+                        }
+                    </div>
                 </div>
-
         </div>
     )
 }

@@ -1,34 +1,61 @@
 .stax-card{
     max-width: 18rem;
-    border-radius: 15px !important ;
+    min-height: 25rem;
+    border-radius: 20px  ;
     margin: 10px;
     overflow: hidden;
-    box-shadow: 3px 10px 10px 2px gray;
+    background-color: white;
+    box-shadow: 5px 5px 10px 2px #999;
     position: relative;
     padding-bottom: 50px;
+    transition: 125ms;
+
 }
 
+.stax-card:hover{
+    transform: scale(1.1);
+    z-index: 1;
+}
 
 .stax-card-title{
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
     padding: 15px;
-    vertical-align: middle;
-    text-align: center;
     font-weight: 500;
     border-bottom: 1px solid #EEE;
+    text-align: center;
+    margin: auto;
+    position: relative;
+}
+
+
+.stax-card-delete{
+    margin-left: auto;
+    margin-right: 0.5rem;
+    position: absolute;
+    top: 1em;
+    right: 0.5em;
+    transition: 200ms;
 
 }
+
+.stax-card-delete:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+}
+
 
 .stax-card-body{
     padding: 15px;
+    margin: auto;
 }
 
 .stax-card-footer{
-    background-color: #DDD;
+    font-weight: 500;
     padding: 15px;
     width: 100%;
     position: absolute;
     bottom: 0px;
     height: 50px;
 }
+

@@ -23,9 +23,11 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="Home">
+    <div className="home-container">
       <NavBar user={curUser} />
-      <CardStax/>
+      <div className = 'layout'>
+        <CardStax/>
+      </div>
     </div>
   )
 }
