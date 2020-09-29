@@ -1,4 +1,5 @@
 .stax-card{
+    min-width: 18rem;
     max-width: 18rem;
     min-height: 25rem;
     border-radius: 20px  ;
@@ -9,7 +10,6 @@
     position: relative;
     padding-bottom: 50px;
     transition: 125ms;
-
 }
 
 .stax-card:hover{
@@ -29,6 +29,8 @@
 }
 
 
+
+
 .stax-card-delete{
     margin-left: auto;
     margin-right: 0.5rem;
@@ -36,8 +38,12 @@
     top: 1em;
     right: 0.5em;
     transition: 200ms;
-
 }
+
+.stax-card-delete img{
+    width: 15px;
+}
+
 
 .stax-card-delete:hover{
     cursor: pointer;

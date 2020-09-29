@@ -1,5 +1,5 @@
 import './CardStax.css';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Button } from 'react-bootstrap';
 import Card from './Card/Card';
 
@@ -29,16 +29,20 @@ export default function CardStax() {
 
     const  [notes, setNotes] = useState([note1,note2,note3]); 
 
-
+    function deleteNote(index){
+        let tempNotes = [...notes];
+        tempNotes.splice(index, 1);
+        setNotes(tempNotes);
+    }
 
     return (
         <div className='card-stax'>
                 <Button onClick = {() => setNotes( [...notes, note1]) } >Create Card</Button>
-               
                 <div className="container-fluid d-flex ">
                     <div className = 'row'>
-                        {notes.map((note) =>{
-                            return <Card title = {note.title} txt = {note.message} date = {note.date} />
+                        {notes.map((note,index) =>{
+                            // return <Card  key = {index} title = {note.title} txt = {note.message} date = {note.date} />
+                            return <Card  key = {index} note = {note} onDelete= {()=>deleteNote(index)}/>
                         })
                         }
                     </div>
@@ -47,40 +51,3 @@ export default function CardStax() {
     )
 }
 
-
-
-
- /*{ <div className='row'>
-                            {[
-                                'Primary',
-                                'Secondary',
-                                'Success',
-                                'Danger',
-                                'Warning',
-                                'Info',
-                                'Light',
-                                'Dark',
-                            ].map((variant, idx) => (
-                                <div className='col-md-2'>
-
-                                <Card
-                                    bg={variant.toLowerCase()}
-                                    key={idx}
-                                    text={variant.toLowerCase() === 'light' ? 'dark' : 'white'}
-                                    style={{ width: '18rem' }}
-                                    className="mb-2"
-                                >
-                                    <Card.Header>{variant} Header</Card.Header>
-                                    <Card.Body>
-                                        <Card.Title>{variant} Card Title </Card.Title>
-                                        <Card.Text>
-                                            Some quick example text to build on the card title and make up the bulk
-                                            of the card's content.
-                                        </Card.Text>
-                                    </Card.Body>
-                                </Card>
-                                </div>
-                            ))
-                            }
-                        
-                    </div> }*/
