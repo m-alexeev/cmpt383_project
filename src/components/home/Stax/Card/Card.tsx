@@ -20,7 +20,6 @@ export default function Card(props){
         setShow(false);
     } 
 
-    const handleShow = () => setShow(true); 
 
     let title = props.note.title;
     let txt = props.note.message; 

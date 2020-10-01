@@ -8,15 +8,17 @@
 }
 
 
+
+/* Card animations */
 .example-appear {
     opacity: 0.01;
   }
   
-  .example-appear.example-appear-active {
-    opacity: 1;
-    transition: opacity .5s ease-in;
-  }
- .example-enter {
+.example-appear.example-appear-active {
+  opacity: 1;
+  transition: opacity .5s ease-in;
+}
+.example-enter {
   opacity: 0.01;
 }
 
@@ -32,4 +34,27 @@
 .example-leave.example-leave-active {
   opacity: 0.01;
   transition: opacity 150ms ease-in;
+}
+
+
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+  cursor: crosshair;
 }
