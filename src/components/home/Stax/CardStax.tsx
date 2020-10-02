@@ -1,5 +1,5 @@
 import './CardStax.css';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Alert, Button, FormControl, InputGroup, Modal } from 'react-bootstrap';
 import Card from './Card/Card';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
@@ -16,20 +16,38 @@ class Note {
     }
 }
 
-
-
-export default function CardStax() {
+export default function CardStax(props) {
 
     let date = new Date();
     let note1 = new Note("Note1", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dictum venenatis neque. Nulla metus nulla, varius eu est eu, ornare congue nulla. Maecenas et quam commodo, suscipit libero ut, ultricies nisi. Integer lectus tellus, molestie eu commodo at, pellentesque nec justo.", date.toUTCString());
     let note2 = new Note("Note2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dictum venenatis neque. Nulla metus nulla, varius eu est eu, ornare congue nulla. Maecenas et quam commodo, suscipit libero ut, ultricies nisi. Integer lectus tellus, molestie eu commodo at, pellentesque nec justo.", date.toUTCString());
     let note3 = new Note("Note3", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", date.toUTCString()); 
 
+
+    const [user, setUser] = useState(props.user) ;
+
     const [notes, setNotes] = useState([note1,note2,note3]); 
     const [show, setShow] = useState(false);
     const [text, setText] = useState("");
     const [title, setTitle] = useState("");
     const [err, setError] = useState("");
+
+
+
+    useEffect(() =>{
+        loadUserNotes();
+    },[user]);
+
+
+    function loadUserNotes(){
+        fetch('/getNotes', {
+            method: 'post',
+            body: JSON.stringify({"user":user})
+        }).then(function (response){
+            return response.json();
+        }).then(function (data){
+        });
+    }
 
 
     function validInput(){
@@ -46,7 +64,6 @@ export default function CardStax() {
 
 
     function handleClose(save){
-      
         //Create Note
         if (save) {
 
@@ -77,7 +94,6 @@ export default function CardStax() {
     return (
         <div className='card-stax'>
             <Button onClick = {() =>setShow(true) } >Create Card</Button>
-            
             
             <div className="container-fluid d-flex ">
                 <ReactCSSTransitionGroup

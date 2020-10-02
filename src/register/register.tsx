@@ -14,13 +14,12 @@ export default function RegisterPage() {
   const [emailErr, setEmailError] = useState("");
   const [pwdError, setPwdError] = useState("");
   const [confPwdError, setConfPwdError] = useState("");
-
+  const [registerErr, setRegisterError] = useState(""); 
 
   const history = useHistory();
 
 
   function handleSubmit(e) {
-
     e.stopPropagation();
     if (validatePwd() && validateEmail()) {
       e.preventDefault();
@@ -30,8 +29,11 @@ export default function RegisterPage() {
       }).then(function (response) {
         return response.json();
       }).then(function (data) {
-        
-        console.log(data);
+        if (data.err){
+          setRegisterError(data.err);
+        }else{
+          setRegisterError("");
+        }
       });
     }
   }
@@ -79,7 +81,7 @@ export default function RegisterPage() {
 
     return true;
   }
-
+                    
 
   //Email Validation
   function validateEmail() {
@@ -109,10 +111,10 @@ export default function RegisterPage() {
               autoFocus
               type='email'
               onChange={e => setEmail(e.target.value)}
-              isInvalid={!!emailErr}
+              isInvalid={!!emailErr || !!registerErr}
             />
             <Form.Control.Feedback type='invalid'>
-              {emailErr}
+              {emailErr || registerErr}
             </Form.Control.Feedback>
           </FormGroup>
           <FormGroup controlId='password'>
@@ -145,7 +147,7 @@ export default function RegisterPage() {
           Register
           </Button>
           <p className = 'register'>
-          Already have an account? <p className='link' onClick = {() => history.push('/login')} >Login!</p>
+          Already have an account? <strong className='link' onClick = {() => history.push('/login')} >Login!</strong>
           </p>
       </div>
     </div>

@@ -8,8 +8,7 @@ import CardStax from './Stax/CardStax';
 export default function HomePage() {
 
   const history = useHistory();
-
-
+  
   const [curUser, setCurUser] = useState("");
 
   useEffect(() => {
@@ -26,7 +25,7 @@ export default function HomePage() {
     <div className="home-container">
       <NavBar user={curUser} />
       <div className = 'layout'>
-        <CardStax/>
+        <CardStax user = {curUser}/>
       </div>
     </div>
   )

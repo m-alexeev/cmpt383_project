@@ -12,8 +12,6 @@ app.config['SECRET_KEY'] = 'd2047e924a7c6e4f34f8134e17c7e66f'
 db = SQLAlchemy(app)
 
 
-
-
 db.create_all()
 
 class User(db.Model):
@@ -24,7 +22,7 @@ class User(db.Model):
     notes = db.relationship('Note', backref = 'author', lazy = True)
 
     def __repr__(self):
-        return f"User('{self.email}', '{self.image_file}')"
+        return f"User( '{self.id}','{self.email}', '{self.image_file}')"
 
 
 class Note(db.Model):
@@ -36,6 +34,7 @@ class Note(db.Model):
 
     def __repr__(self):
         return f"User('{self.title}', '{self.date_created}')"
+
 
 
 
@@ -57,9 +56,7 @@ def login():
     hashedPwd = hashedPwd.hexdigest()
 
     if (user.password == hashedPwd):
-        username = user_req['email'].split('@')
-        username = username[0]
-        session['user'] = username
+        session['user'] = user_req['email']
         return {'user': user.email, 'redirect': '/'}, 200
     else:
         return {'err': "Incorrect Email or Password"}, 200
@@ -70,11 +67,10 @@ def login():
 def register():
     req = request.data.decode('utf-8')
     user_req = json.loads(req)
-    #print(user['email'])
 
     user = User.query.filter_by(email = user_req['email']).first()
     if (user != None):
-        return {'err': 'email already taken'}
+        return {'err': 'Email is already taken'}
     
     
     salt = 'bounce'
@@ -101,9 +97,23 @@ def logout():
 
 
 @app.route('/getUser')
-def get_cur_user():
+def getCurUser():
     if (session.get('user')):
         return {"user": session['user']},200
     else:
         return {'redirect': 'true'}
 
+
+
+@app.route('/getNotes', methods = ['POST'])
+def getuserNotes():
+    req = request.data.decode('utf-8')
+    user_req = json.loads(req)
+    
+    ##Get user ID
+    user = User.query.filter_by(email = user_req['user']).first()
+    if(user != None):
+        print(user.id)
+
+
+    return {}, 200

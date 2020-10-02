@@ -20,13 +20,13 @@ export default function LoginPage() {
     .then((res) => res.json())
     .then((data) => {
       if (data.user !== undefined) {
-          history.push('/');
+          history.push('/', data.user);
       }
     });
   }, [history]);
 
 
-
+  //Run on page load
   useEffect(() => {
     isAuth();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -54,7 +54,7 @@ export default function LoginPage() {
   async function fetch_request() {
     let data = await fetch('/login', {
       method: 'post',
-      body: JSON.stringify({ "email": email, "password": password })
+      body: JSON.stringify({ "email": email, "password": password })    
     }).then(function (response) {
       return response.json();
     }).then(function (data) {
@@ -111,7 +111,7 @@ export default function LoginPage() {
           Login
           </Button>
         <p className='register'>
-          Don't have an account? <p className='link' onClick={() => history.push('/register')} >Register!</p>
+          Don't have an account? <strong className='link' onClick={() => history.push('/register')} >Register!</strong>
         </p>
       </div>
     </div>
