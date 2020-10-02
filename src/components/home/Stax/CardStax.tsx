@@ -23,8 +23,7 @@ export default function CardStax(props) {
     let note2 = new Note("Note2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dictum venenatis neque. Nulla metus nulla, varius eu est eu, ornare congue nulla. Maecenas et quam commodo, suscipit libero ut, ultricies nisi. Integer lectus tellus, molestie eu commodo at, pellentesque nec justo.", date.toUTCString());
     let note3 = new Note("Note3", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", date.toUTCString()); 
 
-
-    const [user, setUser] = useState(props.user) ;
+    let user = props.user;
 
     const [notes, setNotes] = useState([note1,note2,note3]); 
     const [show, setShow] = useState(false);
@@ -33,19 +32,22 @@ export default function CardStax(props) {
     const [err, setError] = useState("");
 
 
-
     useEffect(() =>{
-        loadUserNotes();
+        if (user.length > 0){
+            loadUserNotes();
+        }
     },[user]);
 
 
     function loadUserNotes(){
+
         fetch('/getNotes', {
             method: 'post',
             body: JSON.stringify({"user":user})
         }).then(function (response){
             return response.json();
         }).then(function (data){
+            console.log(data);
         });
     }
 
@@ -66,7 +68,6 @@ export default function CardStax(props) {
     function handleClose(save){
         //Create Note
         if (save) {
-
             //Check if Input is valid 
             if (!validInput()){
                 return;

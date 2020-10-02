@@ -109,11 +109,13 @@ def getCurUser():
 def getuserNotes():
     req = request.data.decode('utf-8')
     user_req = json.loads(req)
-    
+    print(user_req)
     ##Get user ID
     user = User.query.filter_by(email = user_req['user']).first()
-    if(user != None):
-        print(user.id)
+
+    userID = user.id
+
+    notes = Note.query.filter_by(user_id = userID).all()
 
 
-    return {}, 200
+    return {'notes':notes}, 200

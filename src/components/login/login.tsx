@@ -20,7 +20,7 @@ export default function LoginPage() {
     .then((res) => res.json())
     .then((data) => {
       if (data.user !== undefined) {
-          history.push('/', data.user);
+          history.push('/');
       }
     });
   }, [history]);
