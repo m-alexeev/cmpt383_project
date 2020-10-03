@@ -115,9 +115,14 @@ def getuserNotes():
 
     ##Get Notes for the User    
     notes = Note.query.filter_by(user_id = userID).all()
-    print (notes)
 
-    return {'notes':"test"}, 200
+    jsonArr = []
+    for note in notes:
+        jsonArr.append({'title':note.title, 'body':note.content, 'date': note.date_created})
+
+    print(jsonArr)
+
+    return {'notes':jsonArr}, 200
 
 
 

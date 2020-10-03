@@ -19,12 +19,10 @@ class Note {
 export default function CardStax(props) {
 
     let date = new Date();
-    let note1 = new Note("Note1", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dictum venenatis neque. Nulla metus nulla, varius eu est eu, ornare congue nulla. Maecenas et quam commodo, suscipit libero ut, ultricies nisi. Integer lectus tellus, molestie eu commodo at, pellentesque nec justo.", date.toUTCString());
-    let note2 = new Note("Note2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dictum venenatis neque. Nulla metus nulla, varius eu est eu, ornare congue nulla. Maecenas et quam commodo, suscipit libero ut, ultricies nisi. Integer lectus tellus, molestie eu commodo at, pellentesque nec justo.", date.toUTCString());
-    let note3 = new Note("Note3", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", date.toUTCString()); 
+    
+    let tempNote = new Note("","","")
 
-
-    const [notes, setNotes] = useState([note1,note2,note3]); 
+    const [notes, setNotes] = useState([tempNote]); 
     const [show, setShow] = useState(false);
     const [body, setBody] = useState("");
     const [title, setTitle] = useState("");
@@ -42,8 +40,21 @@ export default function CardStax(props) {
         }).then(function (response){
             return response.json();
         }).then(function (data){
-            console.log(data);
+            setNotes([tempNote]);
+            let tempNotes : Note[];
+            tempNotes = [];
+            data.notes.forEach((note)=>{
+                let newNote = new Note(note.title, note.body, note.date);
+                tempNotes.push(newNote);
+           });
+           console.log(tempNotes);
+           setNotes(tempNotes);
+           console.log(tempNotes);
+
         });
+
+        
+
     }
 
 
@@ -78,7 +89,6 @@ export default function CardStax(props) {
             }).then(function (data){
                 console.log(data);
             });
-
         }
         //Reset vars 
         setBody("");
@@ -86,6 +96,7 @@ export default function CardStax(props) {
         setShow(false);
         setError("");
     }
+
 
     function deleteNote(index){
         let tempNotes = [...notes];
