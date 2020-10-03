@@ -31,9 +31,11 @@ class Note(db.Model):
     title = db.Column(db.String(100), nullable = False)
     date_created = db.Column(db.DateTime, nullable = False, default = datetime.utcnow)
     content = db.Column(db.Text, nullable = False)
+    
+
 
     def __repr__(self):
-        return f"User('{self.title}', '{self.date_created}')"
+        return f"Note('{self.id}','{self.title}', '{self.content}', '{self.date_created}')"
 
 
 
@@ -84,7 +86,7 @@ def register():
     db.session.commit()    
 
 
-    session
+    # session
     return {'user':newUser.email}, 200
 
 
@@ -105,17 +107,36 @@ def getCurUser():
 
 
 
-@app.route('/getNotes', methods = ['POST'])
+@app.route('/getNotes', methods = ['GET'])
 def getuserNotes():
-    req = request.data.decode('utf-8')
-    user_req = json.loads(req)
-    print(user_req)
     ##Get user ID
-    user = User.query.filter_by(email = user_req['user']).first()
-
+    user = User.query.filter_by(email = session['user']).first()
     userID = user.id
 
+    ##Get Notes for the User    
     notes = Note.query.filter_by(user_id = userID).all()
+    print (notes)
+
+    return {'notes':"test"}, 200
 
 
-    return {'notes':notes}, 200
+
+@app.route('/saveNote', methods = ['POST'])
+def saveUserNote():
+    req = request.data.decode('utf-8')
+    json_req = json.loads(req)
+
+    title = json_req['title']
+    body = json_req['body']
+
+    # Get user
+    user = User.query.filter_by(email = session['user']).first()
+    userID = user.id
+
+    #Create and save Note
+    note = Note(user_id = userID, title = title, content = body, date_created= datetime.utcnow() )
+    db.session.add(note)
+    db.session.commit()
+
+    return {'res': 'OKAY'}, 200
+

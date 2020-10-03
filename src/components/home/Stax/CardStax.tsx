@@ -23,27 +23,22 @@ export default function CardStax(props) {
     let note2 = new Note("Note2", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dictum venenatis neque. Nulla metus nulla, varius eu est eu, ornare congue nulla. Maecenas et quam commodo, suscipit libero ut, ultricies nisi. Integer lectus tellus, molestie eu commodo at, pellentesque nec justo.", date.toUTCString());
     let note3 = new Note("Note3", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", date.toUTCString()); 
 
-    let user = props.user;
 
     const [notes, setNotes] = useState([note1,note2,note3]); 
     const [show, setShow] = useState(false);
-    const [text, setText] = useState("");
+    const [body, setBody] = useState("");
     const [title, setTitle] = useState("");
     const [err, setError] = useState("");
 
 
     useEffect(() =>{
-        if (user.length > 0){
-            loadUserNotes();
-        }
-    },[user]);
+        loadUserNotes();
+    },[]);
 
 
     function loadUserNotes(){
-
         fetch('/getNotes', {
-            method: 'post',
-            body: JSON.stringify({"user":user})
+            method: 'get',
         }).then(function (response){
             return response.json();
         }).then(function (data){
@@ -57,7 +52,7 @@ export default function CardStax(props) {
             setError("Enter a title");
             return false ;
         }
-        else if (text.length === 0 ){
+        else if (body.length === 0 ){
             setError("Enter a Note");
             return false; 
         } 
@@ -72,12 +67,21 @@ export default function CardStax(props) {
             if (!validInput()){
                 return;
             }
-
-            let note = new Note(title, text, date.toUTCString());
+            let note = new Note(title, body, date.toUTCString());
             setNotes([...notes,note]);
+
+            fetch('/saveNote', {
+                method : 'post', 
+                body: JSON.stringify({'title': title, 'body':body})
+            }).then(function(response){
+                return response.json();
+            }).then(function (data){
+                console.log(data);
+            });
+
         }
         //Reset vars 
-        setText("");
+        setBody("");
         setTitle("")
         setShow(false);
         setError("");
@@ -124,7 +128,7 @@ export default function CardStax(props) {
                         <FormControl onChange= {e =>setTitle(e.target.value)}></FormControl>
                     </InputGroup>
                     <InputGroup className='mb-3' >
-                        <FormControl rows={10} as='textarea' onChange={e=>setText(e.target.value)} aria-label='Note'></FormControl>
+                        <FormControl rows={10} as='textarea' onChange={e=>setBody(e.target.value)} aria-label='Note'></FormControl>
                     </InputGroup>
                 </Modal.Body>
                 {/*Show Warning*/}
