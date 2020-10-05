@@ -5,11 +5,13 @@ import Card from './Card/Card';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 class Note {
+    id: number; 
     title: string;
     message: string;
     date: string
 
-    constructor(title: string, message: string, date: string) {
+    constructor(id: number,  title: string, message: string, date: string) {
+        this.id = id; 
         this.title = title;
         this.message = message;
         this.date = date;
@@ -20,7 +22,7 @@ export default function CardStax(props) {
 
     let date = new Date();
     
-    let tempNote = new Note("","","")
+    let tempNote = new Note(-1,"","","")
 
     const [notes, setNotes] = useState([tempNote]); 
     const [show, setShow] = useState(false);
@@ -44,13 +46,11 @@ export default function CardStax(props) {
             let tempNotes : Note[];
             tempNotes = [];
             data.notes.forEach((note)=>{
-                let newNote = new Note(note.title, note.body, note.date);
+                let newNote = new Note(note.id, note.title, note.body, note.date);
+                console.log(note.id);
                 tempNotes.push(newNote);
            });
-           console.log(tempNotes);
            setNotes(tempNotes);
-           console.log(tempNotes);
-
         });
 
         
@@ -78,7 +78,7 @@ export default function CardStax(props) {
             if (!validInput()){
                 return;
             }
-            let note = new Note(title, body, date.toUTCString());
+            let note = new Note(-1, title, body, date.toUTCString());
             setNotes([...notes,note]);
 
             fetch('/saveNote', {
@@ -99,6 +99,9 @@ export default function CardStax(props) {
 
 
     function deleteNote(index){
+
+
+
         let tempNotes = [...notes];
         tempNotes.splice(index, 1);
         setNotes(tempNotes);

@@ -118,9 +118,8 @@ def getuserNotes():
 
     jsonArr = []
     for note in notes:
-        jsonArr.append({'title':note.title, 'body':note.content, 'date': note.date_created})
+        jsonArr.append({'id':note.id, 'title':note.title, 'body':note.content, 'date': note.date_created})
 
-    print(jsonArr)
 
     return {'notes':jsonArr}, 200
 
@@ -145,3 +144,16 @@ def saveUserNote():
 
     return {'res': 'OKAY'}, 200
 
+
+
+@app.route('/deleteNote', methods = ['POST'])
+def deleteUserNote():
+    req = request.data.decode('utf-8')
+    delete_req = json.loads(req)
+
+    id = delete_req['id']
+
+    note = Note.query.filte_by(id = id).delete()
+    db.commit()
+
+    return {'res': "OKAY"}, 200
