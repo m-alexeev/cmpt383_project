@@ -153,7 +153,7 @@ def deleteUserNote():
 
     id = delete_req['id']
 
-    note = Note.query.filte_by(id = id).delete()
-    db.commit()
+    note = Note.query.filter_by(id = id).delete()
+    db.session.commit()
 
     return {'res': "OKAY"}, 200

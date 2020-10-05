@@ -100,11 +100,22 @@ export default function CardStax(props) {
 
     function deleteNote(index){
 
-
-
         let tempNotes = [...notes];
-        tempNotes.splice(index, 1);
-        setNotes(tempNotes);
+
+        let delNote = tempNotes[index]; 
+
+        fetch('/deleteNote', {
+            method : 'post',
+            body : JSON.stringify({'id': delNote.id})
+        }).then (function (response){
+            return response.json();
+        }).then (function (data){
+            if (data.res === "OKAY"){
+                tempNotes.splice(index, 1);
+                setNotes(tempNotes);
+            }
+        });
+
     }
 
     const items = notes.map((note,index)=><Card  key = {index} note = {note} onDelete= {()=>deleteNote(index)}/>);
