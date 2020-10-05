@@ -41,7 +41,7 @@ export default function Card(props){
                 </div>
 
             <div className = 'stax-card-body'>
-                {txt}
+                <p>{txt}</p>
             </div>
             <div className = 'stax-card-footer'>
                 {date}

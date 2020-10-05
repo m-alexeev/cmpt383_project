@@ -53,8 +53,6 @@ export default function CardStax(props) {
            setNotes(tempNotes);
         });
 
-        
-
     }
 
 
@@ -118,7 +116,7 @@ export default function CardStax(props) {
 
     }
 
-    const items = notes.map((note,index)=><Card  key = {index} note = {note} onDelete= {()=>deleteNote(index)}/>);
+    const items = notes.map((note,index)=> <Card  key = {index} note = {note} onDelete= {()=>deleteNote(index)}/>);
 
 
     return (

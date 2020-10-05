@@ -54,6 +54,7 @@
 .stax-card-body{
     padding: 15px;
     margin: auto;
+    white-space: pre-line;
 }
 
 .stax-card-footer{
