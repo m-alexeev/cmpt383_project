@@ -1,7 +1,6 @@
 import React from 'react';
-import {Navbar, Button} from 'react-bootstrap';
+import {Navbar, Button, Nav} from 'react-bootstrap';
 import {useHistory} from 'react-router-dom';
-
 
 export default function NavBar(props){
     const user = props.user;
@@ -15,9 +14,12 @@ export default function NavBar(props){
         )
     }
 
+    function handleSelect(eventKey){
+        history.push(eventKey);
+    }
 
     return (
-        <Navbar bg ='dark' variant = 'dark'>
+        <Navbar bg ='dark' variant = 'dark' >
             <Navbar.Brand href = ''>
                 <img
                     src = {process.env.PUBLIC_URL+ '/stax_logo.svg'}
@@ -28,6 +30,12 @@ export default function NavBar(props){
                 />{' '}
                     Stax</Navbar.Brand>
             <Navbar.Toggle/>
+            <Nav className = 'mr-auto' onSelect = {handleSelect}>
+                <Nav.Link href='/' eventKey = '/' >Home</Nav.Link>
+                <Nav.Link href='/friends' eventKey = '/friends' >Friends</Nav.Link>
+                <Nav.Link eventKey = '/profile' >Profile</Nav.Link>
+            </Nav>
+
             <Navbar.Collapse className = 'justify-content-end'>
                 <Navbar.Text>
                     {user}
