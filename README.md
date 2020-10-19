@@ -1,4 +1,4 @@
-##To run the app in docker 
+## To run the app in docker 
 
 ### `docker-compose build && docker-compose up`
 Can be ran without docker as well <br/>
