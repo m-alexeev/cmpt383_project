@@ -1,4 +1,13 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+##To run the app in docker 
+
+### `docker-compose build && docker-compose up`
+Can be ran without docker as well <br/>
+
+### `api.py`
+comment out the `app.config` line 
+
+### `package.json`
+change the `proxy` to `localhost:5000`
 
 ## Available Scripts
 
