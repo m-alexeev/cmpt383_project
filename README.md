@@ -3,10 +3,10 @@
 ### `docker-compose build && docker-compose up`
 Can be ran without docker as well <br/>
 
-### `api.py`
+`api.py`
 comment out the `app.config` line 
 
-### `package.json`
+`package.json`
 change the `proxy` to `localhost:5000`
 
 ## Available Scripts
