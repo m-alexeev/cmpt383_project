@@ -31,7 +31,6 @@ function App() {
           <Route  path="/"  >
             <HomePage/>
           </Route>
-         
         </Switch>
       </Router>
     </div>

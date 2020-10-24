@@ -9,7 +9,7 @@ import hashlib
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 app.config['SECRET_KEY'] = 'd2047e924a7c6e4f34f8134e17c7e66f'
-app.config['SERVER_NAME'] = 'flask-api:5000'
+# app.config['SERVER_NAME'] = 'flask-api:5000'
 db = SQLAlchemy(app)
 
 
@@ -162,4 +162,4 @@ def deleteUserNote():
 
 
 if  __name__ == '__main__':
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host="127.0.0.1", debug=True)
