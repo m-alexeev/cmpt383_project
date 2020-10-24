@@ -1,0 +1,19 @@
+.friends-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.friends-list{
+    width: 35%
+}
+
+.friends-search{
+    border-left: 1px solid #555;
+    height: 100vh;
+    width: 100%;
+}
+
+
+.search-form{
+    margin: 100px 25%;
+}
