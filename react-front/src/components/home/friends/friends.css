@@ -4,7 +4,9 @@
 }
 
 .friends-list{
-    width: 35%
+    height: 100vh;
+    overflow: auto; 
+    min-width: 250px;
 }
 
 .friends-search{
@@ -16,4 +18,42 @@
 
 .search-form{
     margin: 100px 25%;
+}
+
+
+
+
+
+.box {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #555;
+    margin: 10px;
+    border-radius: 10px;
+    padding: 10px;
+    
+}
+
+.pic{
+    position: relative;
+    border-radius: 50%;
+    min-width: 35px;
+    min-height: 35px;
+    width: 4vw;
+    height: 4vw;
+    overflow: hidden;
+}
+.pic img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+.username{
+    width: 75%;
+}
+
+.add-button{
+    width : 20%;
 }

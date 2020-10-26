@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
+import { createNotEmittedStatement } from 'typescript';
 import NavBar from '../Navbar/navbar'
 
 import './friends.css'
 
+import logo from './pic.png';
 
 class FriendObj{
    id: number;
@@ -31,14 +33,24 @@ export default function Friends() {
 
 
    //TODO: Create user obj 
+   let user1 = new FriendObj(0, "user1", "testIMG");
+   let user2 = new FriendObj(1, "user2", "testIMG"); 
+   let user3 = new FriendObj(2, "user3", "testIMG"); 
+
+   let users = [user1,user2,user3];
+
+   const friendsList = users.map((user,index) => <Friend id = {user.id} username = {user.username} img = {user.img}/>); 
+
 
    useEffect(() => {
-      fetch('/getUser').then(res => res.json()).then(data => {
-         setCuruser(data.user);
-         if (data.redirect != null) {
-            history.push('/login');
-         }
-      });
+      if (curUser === ""){
+         fetch('/getUser').then(res => res.json()).then(data => {
+            setCuruser(data.user);
+            if (data.redirect != null) {
+               history.push('/login');
+            }
+         });
+      }
       //TODO: Create search query 
       console.log(search);
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -50,8 +62,8 @@ export default function Friends() {
          <NavBar user={curUser} />
          <div className='friends-container'>
             <div className='friends-list'>
-               List
-                </div>
+               {friendsList}
+            </div>
             <div className='friends-search'>
                <div className='search-form'>
                   <Form>
@@ -81,13 +93,13 @@ export function Friend(props){
    return (
       <div className = "box">
          <div className = 'pic'>
-            <img src={img}></img>
+            <img src={logo} alt = 'user image'></img>
          </div>
          <div className = 'username'>
             {username}
          </div>
          <div className = 'add-button'>
-            +
+            x
          </div>
       </div>
    )
