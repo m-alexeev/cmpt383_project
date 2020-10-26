@@ -8,15 +8,15 @@ import './friends.css'
 
 import logo from './pic.png';
 
-class FriendObj{
+class FriendObj {
    id: number;
-   username: string; 
+   username: string;
    img: string;
 
-   constructor(id:number, username:string, img:string){
+   constructor(id: number, username: string, img: string) {
       this.id = id;
-      this.username = username; 
-      this.img = img; 
+      this.username = username;
+      this.img = img;
    }
 }
 
@@ -34,16 +34,16 @@ export default function Friends() {
 
    //TODO: Create user obj 
    let user1 = new FriendObj(0, "user1", "testIMG");
-   let user2 = new FriendObj(1, "user2", "testIMG"); 
-   let user3 = new FriendObj(2, "user3", "testIMG"); 
+   let user2 = new FriendObj(1, "user2", "testIMG");
+   let user3 = new FriendObj(2, "user3", "testIMG");
 
-   let users = [user1,user2,user3];
+   let users = [user1, user2, user3];
 
-   const friendsList = users.map((user,index) => <Friend id = {user.id} username = {user.username} img = {user.img}/>); 
+   const friendsList = users.map((user, index) => <Friend id={user.id} username={user.username} img={user.img} />);
 
 
    useEffect(() => {
-      if (curUser === ""){
+      if (curUser === "") {
          fetch('/getUser').then(res => res.json()).then(data => {
             setCuruser(data.user);
             if (data.redirect != null) {
@@ -62,6 +62,7 @@ export default function Friends() {
          <NavBar user={curUser} />
          <div className='friends-container'>
             <div className='friends-list'>
+               <p> Friends </p>
                {friendsList}
             </div>
             <div className='friends-search'>
@@ -84,22 +85,26 @@ export default function Friends() {
 
 
 
-export function Friend(props){
+export function Friend(props) {
 
-   const username = props.username; 
+   const username = props.username;
    const id = props.id;
    const img = props.img;
- 
+
    return (
-      <div className = "box">
-         <div className = 'pic'>
-            <img src={logo} alt = 'user image'></img>
+      <div className="box">
+         <div className='pic'>
+            <img src={logo} alt='user image'></img>
          </div>
-         <div className = 'username'>
+         <div className='username'>
             {username}
          </div>
-         <div className = 'add-button'>
-            x
+         <div className='remove'>
+            <img
+               src={process.env.PUBLIC_URL + '/delete.svg'}
+               alt="Delete Icon"
+                >
+            </img>
          </div>
       </div>
    )
