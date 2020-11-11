@@ -43,7 +43,6 @@ class Note(db.Model):
 
 
 
-
 @app.route('/login', methods = ['POST'])
 def login():
     req = request.data.decode('utf-8')

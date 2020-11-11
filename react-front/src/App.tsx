@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
-import LoginPage from './login/login';
-import RegisterPage from './register/register';
+import LoginPage from './components/login/login';
+import RegisterPage from './components/register/register';
 import Friends from './components/home/friends/friends';
 
 //Router 

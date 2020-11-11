@@ -39,8 +39,16 @@ export default function Friends() {
 
    let users = [user1, user2, user3];
 
-   const friendsList = users.map((user, index) => <Friend id={user.id} username={user.username} img={user.img} />);
 
+   function deleteUser(index){
+      users.splice(index, 1); 
+      console.log("removed" + index); 
+   }
+
+
+
+
+   const friendsList = users.map((user,index) => <Friend key = {index} friend = {user} onDelete = {() => deleteUser(index)} />);
 
    useEffect(() => {
       if (curUser === "") {
@@ -87,9 +95,15 @@ export default function Friends() {
 
 export function Friend(props) {
 
+   const user = props.friend; 
    const username = props.username;
-   const id = props.id;
-   const img = props.img;
+   // const id = props.id;
+   // const img = props.img;
+
+   function handleDelete(){
+      props.onDelete(); 
+   }
+
 
    return (
       <div className="box">
@@ -97,13 +111,13 @@ export function Friend(props) {
             <img src={logo} alt='user image'></img>
          </div>
          <div className='username'>
-            {username}
+            {user.username}
          </div>
          <div className='remove'>
             <img
                src={process.env.PUBLIC_URL + '/delete.svg'}
                alt="Delete Icon"
-                >
+               onClick = {() => handleDelete()}>
             </img>
          </div>
       </div>

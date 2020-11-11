@@ -1,8 +1,9 @@
 import './CardStax.css';
 import React, { useEffect, useState } from 'react'
-import { Alert, Button, FormControl, InputGroup, Modal } from 'react-bootstrap';
+import { Alert, Button, Dropdown, FormControl, InputGroup, Modal } from 'react-bootstrap';
 import Card from './Card/Card';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import { DropdownButton } from 'react-bootstrap';
 
 class Note {
     id: number; 
@@ -29,7 +30,7 @@ export default function CardStax(props) {
     const [body, setBody] = useState("");
     const [title, setTitle] = useState("");
     const [err, setError] = useState("");
-
+    const [sort, showSort] = useState(false);
 
     useEffect(() =>{
         loadUserNotes();
@@ -95,6 +96,13 @@ export default function CardStax(props) {
         setError("");
     }
 
+    function handleSortClose(){
+        showSort(false);
+    }
+
+    function handleSelect(e){
+        console.log(e)
+    }
 
     function deleteNote(index){
 
@@ -122,7 +130,7 @@ export default function CardStax(props) {
     return (
         <div className='card-stax'>
             <Button onClick = {() =>setShow(true) } >Create Card</Button>
-            
+            <Button onClick = {() =>showSort(true)}> Sort Cards </Button>
             <div className="container-fluid d-flex ">
                 <ReactCSSTransitionGroup
                     className = 'row'
@@ -137,6 +145,22 @@ export default function CardStax(props) {
                     {items}
                 </ReactCSSTransitionGroup>
             </div>
+
+            <Modal show = {sort} onHide = {handleSortClose} centered>
+                <Modal.Header closeButton> 
+                    <Modal.Title>Sort your Notes</Modal.Title>
+                </Modal.Header>
+                <Modal.Body >
+                   <DropdownButton
+                    title="Sory By"
+                    id="dropdown-menu-align-right"
+                    onSelect={handleSelect}>
+                            <Dropdown.Item eventKey="option-1">Date</Dropdown.Item>
+                            <Dropdown.Item eventKey="option-2">Title</Dropdown.Item>
+                    </DropdownButton>
+                </Modal.Body>
+            </Modal>
+
 
 
             <Modal  show = {show} onHide ={handleClose}  centered>
