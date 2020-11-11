@@ -102,9 +102,13 @@ export default function CardStax(props) {
 
     function handleSelect(e){
         console.log(e)
+        // TODO REST API CALL (Send data to backend )
+        // TODO Implement C call through python 
+        // TODO return notes and re-draw
     }
 
     function deleteNote(index){
+        
 
         let tempNotes = [...notes];
 
@@ -155,8 +159,8 @@ export default function CardStax(props) {
                     title="Sory By"
                     id="dropdown-menu-align-right"
                     onSelect={handleSelect}>
-                            <Dropdown.Item eventKey="option-1">Date</Dropdown.Item>
-                            <Dropdown.Item eventKey="option-2">Title</Dropdown.Item>
+                            <Dropdown.Item eventKey="Date">Date</Dropdown.Item>
+                            <Dropdown.Item eventKey="Title">Title</Dropdown.Item>
                     </DropdownButton>
                 </Modal.Body>
             </Modal>
