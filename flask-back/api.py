@@ -161,5 +161,16 @@ def deleteUserNote():
     return {'res': "OKAY"}, 200
 
 
+
+@app.route('/sortNotes', methods = ['POST'])
+def sortNotes():
+    req = request.data.decode('utf-8')
+    sort_req = json.loads(req)
+
+    print(sort_req)
+
+    return {'res': "OKAY"},200
+
+
 if  __name__ == '__main__':
     app.run(host="127.0.0.1", debug=True)

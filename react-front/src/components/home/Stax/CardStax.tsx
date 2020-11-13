@@ -4,6 +4,7 @@ import { Alert, Button, Dropdown, FormControl, InputGroup, Modal } from 'react-b
 import Card from './Card/Card';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { DropdownButton } from 'react-bootstrap';
+import { JsxEmit } from 'typescript';
 
 class Note {
     id: number; 
@@ -96,15 +97,25 @@ export default function CardStax(props) {
         setError("");
     }
 
-    function handleSortClose(){
-        showSort(false);
-    }
 
-    function handleSelect(e){
-        console.log(e)
+
+    function handleSelect(prop){
+        console.log(prop)
+
+        fetch('/sortNotes', {
+            method : 'post',
+            body: JSON.stringify({'mode': prop })
+        }).then(function(response){
+            return response.json();
+        }).then(function (data){
+            console.log(data);
+        })
         // TODO REST API CALL (Send data to backend )
         // TODO Implement C call through python 
         // TODO return notes and re-draw
+
+
+        showSort(false);
     }
 
     function deleteNote(index){
@@ -150,7 +161,7 @@ export default function CardStax(props) {
                 </ReactCSSTransitionGroup>
             </div>
 
-            <Modal show = {sort} onHide = {handleSortClose} centered>
+            <Modal show = {sort} onHide = {() => showSort(false)} centered>
                 <Modal.Header closeButton> 
                     <Modal.Title>Sort your Notes</Modal.Title>
                 </Modal.Header>
