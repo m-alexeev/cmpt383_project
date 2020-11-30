@@ -1,7 +1,7 @@
-from ctypes import *
+import ctypes 
 import os 
 
-lib = ctypes.CDLL("./sort.so")
+lib = ctypes.CDLL("./sorts.so")
 
 def covertToBytesString(arr):
     byteArr = []
@@ -12,7 +12,14 @@ def covertToBytesString(arr):
 
 
 def sortArrayC(arr):
-    pass
+    cArr = (ctypes.c_char_p * len(arr))()
+    cArr [:] = arr
+    lib.sort_arr.restype = ctypes.c_char_p
+    res = lib.sort_arr(cArr, len(cArr))
+    print(res)
 
 def jsonToArray(json):
     pass
+
+
+sortArrayC(covertToBytesString(["abc", "xxx","def"]))
