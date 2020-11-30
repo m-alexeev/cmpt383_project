@@ -1,6 +1,6 @@
 ## To run the app in docker 
 
-### `docker-compose build && docker-compose up`
+### `cd deploy docker-compose build && docker-compose up`
 Can be ran without docker as well <br/>
 
 `api.py`

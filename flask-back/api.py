@@ -5,6 +5,9 @@ import json
 from json import JSONEncoder
 import hashlib
 
+import go_module
+
+
 
 
 app = Flask(__name__)
@@ -38,8 +41,6 @@ class Note(db.Model):
 
     def __repr__(self):
         return f"Note('{self.id}','{self.title}', '{self.content}', '{self.date_created}')"
-
-
 
 
 
@@ -168,8 +169,10 @@ def sortNotes():
     sort_req = json.loads(req)
 
     print(sort_req)
+    go_module.sort()
 
     return {'res': "OKAY"},200
+
 
 
 if  __name__ == '__main__':
