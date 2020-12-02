@@ -33,8 +33,12 @@ export default function CardStax(props) {
     const [err, setError] = useState("");
     const [sort, showSort] = useState(false);
 
+    const [sortMode, setSortMode] = useState ("Title");
+    const [sortOrder, setSortOrder] = useState("Descending");
+
     useEffect(() =>{
         loadUserNotes();
+        
     },[]);
 
 
@@ -99,16 +103,22 @@ export default function CardStax(props) {
 
 
 
-    function handleSelect(prop){
-        console.log(prop)
+    function handleSelect(){
 
         fetch('/sortNotes', {
             method : 'post',
-            body: JSON.stringify({'mode': prop })
+            body: JSON.stringify({'mode': sortMode, 'order': sortOrder})
         }).then(function(response){
             return response.json();
         }).then(function (data){
             console.log(data);
+            let tempNotes : Note[]; 
+            tempNotes = [];
+            data.notes.forEach((note) =>{
+                let newNote = new Note(note.id, note.title, note.body, note.date);
+                tempNotes.push(newNote);
+            });
+            setNotes(tempNotes);
         })
         // TODO REST API CALL (Send data to backend )
         // TODO Implement C call through python 
@@ -167,12 +177,23 @@ export default function CardStax(props) {
                 </Modal.Header>
                 <Modal.Body >
                    <DropdownButton
-                    title="Sory By"
-                    id="dropdown-menu-align-right"
-                    onSelect={handleSelect}>
+                        title="Sort By"
+                        id="dropdown-menu-align-right"
+                        onSelect={ e => {setSortMode(String(e))}}>
                             <Dropdown.Item eventKey="Date">Date</Dropdown.Item>
                             <Dropdown.Item eventKey="Title">Title</Dropdown.Item>
                     </DropdownButton>
+                    <DropdownButton
+                        title = "Sort Order"
+                        id="dropdown-menu-align-right"
+                        onSelect = {e => {setSortOrder(String(e))}}
+                        >
+                            <Dropdown.Item eventKey="Ascending">Ascending</Dropdown.Item>
+                            <Dropdown.Item eventKey="Descending">Descending</Dropdown.Item>
+                    </DropdownButton>
+                    <Button variant = 'danger' onClick = {handleSelect}>
+                        Confirm
+                    </Button>
                 </Modal.Body>
             </Modal>
 
