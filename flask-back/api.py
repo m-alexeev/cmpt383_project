@@ -196,11 +196,16 @@ def sortNotes():
 
 
 
-    # # ! Sort the dates 
-    # if len(dates) > 0: 
-    #     dates = sorted(dates)
-    #     print(dates)
-        
+    # ! Sort the dates
+    if len(dates) > 0: 
+        bte = go_module.covertToBytesString(dates)
+        dates = go_module.sortArrayC(bte)
+        print(dates)
+        for date in dates: 
+            for note in notes: 
+                if note.date_created.strftime("%m/%d/%Y %H:%M:%S") == date:
+                    newNotes += [note]
+                    break
 
 
     #! Sort the titles
