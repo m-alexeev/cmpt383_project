@@ -1,9 +1,9 @@
 FROM python:3.8
 
-# RUN pip3 install Flask
-# RUN pip3 install SQLAlchemy
-# RUN pip3 install Flask-SQLAlchemy
-# RUN pip3 install python-dotenv
+RUN pip3 install Flask
+RUN pip3 install SQLAlchemy
+RUN pip3 install Flask-SQLAlchemy
+RUN pip3 install python-dotenv
 
 COPY reqs.txt reqs.txt
 RUN pip install -r reqs.txt

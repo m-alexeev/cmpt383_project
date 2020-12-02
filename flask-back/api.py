@@ -4,16 +4,15 @@ from datetime import datetime
 import json
 from json import JSONEncoder
 import hashlib
+from flask import jsonify
 
 import go_module
-
-
 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 app.config['SECRET_KEY'] = 'd2047e924a7c6e4f34f8134e17c7e66f'
-# app.config['SERVER_NAME'] = 'flask-api:5000'
+#app.config['SERVER_NAME'] = 'flask-api:5000'
 db = SQLAlchemy(app)
 
 
@@ -52,7 +51,7 @@ def login():
     
     user = User.query.filter_by(email = user_req['email']).first()
     if (user == None):
-        return {'err': 'Incorrect Email or Password'}, 200
+        return jsonify({'err': 'Incorrect Email or Password'}), 200
     
     salt = 'bounce'
     pwd = user_req['password'] + salt
@@ -62,9 +61,9 @@ def login():
 
     if (user.password == hashedPwd):
         session['user'] = user_req['email']
-        return {'user': user.email, 'redirect': '/'}, 200
+        return jsonify({'user': user.email, 'redirect': '/'}), 200
     else:
-        return {'err': "Incorrect Email or Password"}, 200
+        return jsonify({'err': "Incorrect Email or Password"}), 200
 
 
 
@@ -90,23 +89,23 @@ def register():
 
 
     # session
-    return {'user':newUser.email}, 200
+    return jsonify({'user':newUser.email}), 200
 
 
 
 @app.route('/signout')
 def logout():
     session.pop('user', None)
-    return {}, 200
+    return jsonify({})
 
 
 
 @app.route('/getUser')
 def getCurUser():
     if (session.get('user')):
-        return {"user": session['user']},200
+        return jsonify({"user": session['user']}),200
     else:
-        return {'redirect': 'true'}
+        return jsonify({'redirect': 'true'})
 
 
 
@@ -124,7 +123,7 @@ def getuserNotes():
         jsonArr.append({'id':note.id, 'title':note.title, 'body':note.content, 'date': note.date_created})
 
 
-    return {'notes':jsonArr}, 200
+    return jsonify({'notes':jsonArr}), 200
 
 
 
@@ -145,7 +144,7 @@ def saveUserNote():
     db.session.add(note)
     db.session.commit()
 
-    return {'res': 'OKAY'}, 200
+    return jsonify({'res': "OKAY"}), 200
 
 
 
@@ -159,7 +158,7 @@ def deleteUserNote():
     note = Note.query.filter_by(id = id).delete()
     db.session.commit()
 
-    return {'res': "OKAY"}, 200
+    return jsonify({'res': "OKAY"}), 200
 
 
 
@@ -169,10 +168,57 @@ def sortNotes():
     sort_req = json.loads(req)
 
     print(sort_req)
-    go_module.sort()
+    
+    #* Get user notes
+    user = User.query.filter_by(email = session['user']).first()
+    uid = user.id 
 
-    return {'res': "OKAY"},200
+    notes = Note.query.filter_by(user_id = uid).all()
 
+    titles = []
+    if sort_req["mode"] == "Title": 
+        for note in notes:
+            titles += [note.title]
+    print(titles)
+
+    dates = []
+    if sort_req["mode"] == "Date":
+        for note in notes:
+            #* Convert to readable time 
+            dates += [note.date_created.strftime("%m/%d/%Y %H:%M:%S")]
+    print(dates)
+
+    newNotes = []
+
+    # TODO Send to sort 
+    # TODO REceive new order
+    # TODO RETURN NEW NOTEs
+
+
+
+    # # ! Sort the dates 
+    # if len(dates) > 0: 
+    #     dates = sorted(dates)
+    #     print(dates)
+        
+
+
+    #! Sort the titles
+    if len(titles) > 0:
+        bte = go_module.covertToBytesString(titles)
+        titles = go_module.sortArrayC(bte)
+        print(titles)
+        for title in titles:
+            for note in notes:
+                if note.title == title:
+                    newNotes += [note]
+                    break
+
+    jsonArr = []
+    for note in newNotes: 
+        jsonArr.append({'id':note.id, 'title':note.title, 'body':note.content, 'date': note.date_created})
+
+    return jsonify({'notes': jsonArr}), 200
 
 
 if  __name__ == '__main__':

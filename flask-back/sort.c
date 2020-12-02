@@ -16,11 +16,6 @@ char** sort_arr(const char** list, int length){
     char** newArr = malloc(sizeof(list) * length); 
     memcpy(newArr, list, sizeof(list) * length);
     
-    
-    for (int i = 0; i < length; i ++){
-        printf("%s\n", newArr[i]);
-    }
-    printf("\n");
     qsort(newArr, length, sizeof(newArr[0]), strCmp); 
 
     return newArr;

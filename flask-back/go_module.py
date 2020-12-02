@@ -12,18 +12,18 @@ def covertToBytesString(arr):
 
 
 def sortArrayC(arr):
+    print(arr)
     cArr = (ctypes.c_char_p * len(arr))()
     cArr [:] = arr
 
     res = lib.sort_arr
     res.restype = ctypes.POINTER(ctypes.c_char_p)
     result = res(cArr, len(cArr))
-    for i in range(len(cArr)):
-        print(result[i].decode())
+    
+    return [result[i].decode() for i in range (len(cArr))]
+
 
 
 def jsonToArray(json):
     pass
 
-
-sortArrayC(covertToBytesString(["abc", "xxx","def"]))
