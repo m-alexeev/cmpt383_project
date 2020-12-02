@@ -4,7 +4,7 @@
 react-front/node_modules
 /.pnp
 .pnp.js
-flask-back/flask/
+**/flask-back/flask
 
 # testing
 /coverage
