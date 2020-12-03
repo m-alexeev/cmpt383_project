@@ -18,6 +18,11 @@ db = SQLAlchemy(app)
 
 db.create_all()
 
+if  __name__ == '__main__':
+    app.run(host="127.0.0.1", debug=True)
+
+
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     email = db.Column(db.String(120), unique = True, nullable = False)
@@ -166,53 +171,43 @@ def deleteUserNote():
 def sortNotes():
     req = request.data.decode('utf-8')
     sort_req = json.loads(req)
-
-    print(sort_req)
-    
     #* Get user notes
     user = User.query.filter_by(email = session['user']).first()
     uid = user.id 
-
     notes = Note.query.filter_by(user_id = uid).all()
 
     titles = []
     if sort_req["mode"] == "Title": 
         for note in notes:
             titles += [note.title]
-    print(titles)
 
     dates = []
     if sort_req["mode"] == "Date":
         for note in notes:
             #* Convert to readable time 
             dates += [note.date_created.strftime("%m/%d/%Y %H:%M:%S")]
-    print(dates)
 
     newNotes = []
-
-    # TODO Send to sort 
-    # TODO REceive new order
-    # TODO RETURN NEW NOTEs
-
-
-
     # ! Sort the dates
     if len(dates) > 0: 
         bte = go_module.covertToBytesString(dates)
-        dates = go_module.sortArrayC(bte)
-        print(dates)
+        if sort_req["order"] == "Ascending":  
+            dates = go_module.sortArrayC(bte, 1)
+        else:
+            dates = go_module.sortArrayC(bte, 0)
         for date in dates: 
             for note in notes: 
                 if note.date_created.strftime("%m/%d/%Y %H:%M:%S") == date:
                     newNotes += [note]
                     break
 
-
     #! Sort the titles
     if len(titles) > 0:
         bte = go_module.covertToBytesString(titles)
-        titles = go_module.sortArrayC(bte)
-        print(titles)
+        if sort_req["order"] == "Ascending":
+            titles = go_module.sortArrayC(bte, 1)
+        else: 
+            titles = go_module.sortArrayC(bte, 0)
         for title in titles:
             for note in notes:
                 if note.title == title:
@@ -224,7 +219,3 @@ def sortNotes():
         jsonArr.append({'id':note.id, 'title':note.title, 'body':note.content, 'date': note.date_created})
 
     return jsonify({'notes': jsonArr}), 200
-
-
-if  __name__ == '__main__':
-    app.run(host="127.0.0.1", debug=True)

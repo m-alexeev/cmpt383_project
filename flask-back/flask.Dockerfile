@@ -11,6 +11,7 @@ RUN pip install -r reqs.txt
 ENV LISTEN_PORT=5000
 
 ENV FLASK_APP=api.py
+ENV FLASK_DEBUG = 1 
 # ENV FLASK_RUN_HOST=127.0.0.1
 
 
@@ -18,5 +19,5 @@ WORKDIR /backend
 COPY . .
 
 EXPOSE 5000
-CMD python3 api.py
-
+# CMD python3 api.py
+CMD flask run

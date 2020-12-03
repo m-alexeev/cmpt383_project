@@ -33,12 +33,12 @@ export default function CardStax(props) {
     const [err, setError] = useState("");
     const [sort, showSort] = useState(false);
 
+
     const [sortMode, setSortMode] = useState ("Title");
     const [sortOrder, setSortOrder] = useState("Descending");
 
     useEffect(() =>{
         loadUserNotes();
-        
     },[]);
 
 
