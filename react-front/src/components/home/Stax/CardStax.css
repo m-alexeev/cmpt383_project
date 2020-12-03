@@ -59,3 +59,16 @@
   cursor: crosshair;
 }
 
+.option-buttons{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.option-buttons button{
+  width: 150px;
+  margin: 10px 5px 5px; 
+}
+
+.row{ 
+  margin: 10px auto;
+}
