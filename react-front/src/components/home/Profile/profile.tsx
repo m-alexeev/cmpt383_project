@@ -10,6 +10,11 @@ export default function Profile() {
   const hist = useHistory();
 
   const [curUser, setCurUser] = useState("")
+  const [email, setEmail] = useState(""); 
+  const [pwd, setPwd] = useState(""); 
+  const [reminder, setReminder] = useState(false); 
+
+
 
   useEffect(() => {
     fetch('/getUser').then(res => res.json()).then(data => {
@@ -23,7 +28,7 @@ export default function Profile() {
   // !Change placeholders 
 
   function verifyForm(){
-    console.log("verify"); 
+
   }
 
 
@@ -63,12 +68,16 @@ export default function Profile() {
                   label='On'
                   name='reminder'
                   id='reminderOn'
+                  checked = {reminder ? true: false}
+                  onClick = {() => {setReminder(!reminder)}}
                 />
                 <Form.Check
                   type='radio'
                   label='Off'
                   name='reminder'
                   id='reminderOff'
+                  checked = {reminder ? false : true}
+                  onClick = {() => {setReminder(!reminder)}}
                 />
               </Col>
             </Form.Group>
@@ -81,7 +90,6 @@ export default function Profile() {
             Save
           </Button>
         </div>
-
       </div>
     </div>
   );

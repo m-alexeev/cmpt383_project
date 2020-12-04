@@ -1,6 +1,7 @@
 .header{
     font-size: larger;
     text-align: center;
+    font-weight: 600;
     width: 50%;
     margin: 0px auto 20px ;
 }
@@ -12,4 +13,13 @@
     padding: 10px;
     width: 50%;
     margin: 10px auto;
+}
+
+.saveBtn{
+    width: 120px;
+    margin: auto;
+}
+
+button{ 
+    width: 120px;
 }
