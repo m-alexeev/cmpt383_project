@@ -32,8 +32,8 @@ export default function NavBar(props){
             <Navbar.Toggle/>
             <Nav className = 'mr-auto' onSelect = {handleSelect}>
                 <Nav.Link href='/' eventKey = '/' >Home</Nav.Link>
-                <Nav.Link href='/friends' eventKey = '/friends' >Friends</Nav.Link>
-                <Nav.Link eventKey = '/profile' >Profile</Nav.Link>
+                <Nav.Link href='/reminder' eventKey = '/reminder' >Reminders</Nav.Link>
+                <Nav.Link eventKey = '/profile'>Profile</Nav.Link>
             </Nav>
 
             <Navbar.Collapse className = 'justify-content-end'>

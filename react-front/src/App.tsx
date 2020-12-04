@@ -3,7 +3,7 @@ import './App.css';
 import LoginPage from './components/login/login';
 import RegisterPage from './components/register/register';
 import Friends from './components/home/friends/friends';
-
+import Profile from './components/home/Profile/profile';
 //Router 
 import {
   BrowserRouter as Router,
@@ -25,8 +25,11 @@ function App() {
           <Route  path="/register"  >
             <RegisterPage/>
           </Route>
-          <Route path ="/friends">
+          <Route path ="/reminder">
             <Friends/>
+          </Route>
+          <Route path = "/profile">
+            <Profile/>
           </Route>
           <Route  path="/"  >
             <HomePage/>
