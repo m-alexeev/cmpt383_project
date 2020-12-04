@@ -50,31 +50,34 @@ export default function Profile() {
     } 
   }
 
-
-
-
-
-
-
-
-
-
-
   function verifyForm(){
     console.log("reminder: " + reminder); 
     console.log("email: " + email); 
     console.log("pwd: " +  pwd); 
     
+    var entries = {}
+
     if (email.length > 0){
-      var validEmail = validateEmail();
+      if(validateEmail()){
+        entries["email"] = email;
+      }
     }
     if (pwd.length > 0 ){
-      var validPwd = validatePwd();
+      if (validatePwd()){
+        entries['pwd'] = pwd;
+      }
     }
 
+    entries['rem'] = reminder; 
 
-
-    
+    fetch("/updateUser", {
+      method: "post",
+      body: JSON.stringify(entries)
+    }).then(function (response){
+      return response.json();
+    }).then(function (data){
+      console.log(data); 
+    });
   }
 
 
@@ -130,7 +133,7 @@ export default function Profile() {
                   name='reminder'
                   id='reminderOn'
                   checked = {reminder ? true: false}
-                  onClick = {() => {setReminder(!reminder)}}
+                  onChange = {() => {setReminder(!reminder)}}
                 />
                 <Form.Check
                   type='radio'
@@ -138,7 +141,7 @@ export default function Profile() {
                   name='reminder'
                   id='reminderOff'
                   checked = {reminder ? false : true}
-                  onClick = {() => {setReminder(!reminder)}}
+                  onChange = {() => {setReminder(!reminder)}}
                 />
               </Col>
             </Form.Group>

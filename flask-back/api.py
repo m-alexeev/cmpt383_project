@@ -188,7 +188,7 @@ def sortNotes():
             dates += [note.date_created.strftime("%m/%d/%Y %H:%M:%S")]
 
     newNotes = []
-    # ! Sort the dates
+
     if len(dates) > 0: 
         bte = go_module.covertToBytesString(dates)
         if sort_req["order"] == "Ascending":  
@@ -201,7 +201,6 @@ def sortNotes():
                     newNotes += [note]
                     break
 
-    #! Sort the titles
     if len(titles) > 0:
         bte = go_module.covertToBytesString(titles)
         if sort_req["order"] == "Ascending":
@@ -219,3 +218,15 @@ def sortNotes():
         jsonArr.append({'id':note.id, 'title':note.title, 'body':note.content, 'date': note.date_created})
 
     return jsonify({'notes': jsonArr}), 200
+
+
+
+@app.route('/updateUser', methods = ['POST'])
+def updateUser():
+    req = request.data.decode('utf-8')
+    update_req = json.loads(req)
+
+    print (update_req)
+
+    return jsonify({}), 200
+    
