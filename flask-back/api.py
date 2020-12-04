@@ -22,7 +22,6 @@ if  __name__ == '__main__':
     app.run(host="127.0.0.1", debug=True)
 
 
-
 class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     email = db.Column(db.String(120), unique = True, nullable = False)

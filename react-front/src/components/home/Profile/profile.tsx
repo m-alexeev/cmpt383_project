@@ -3,7 +3,7 @@ import "./profile.css"
 import NavBar from "../Navbar/navbar";
 import { useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { Form, Row, Col, Button } from 'react-bootstrap';
+import { Form, Row, Col, Button, Modal } from 'react-bootstrap';
 
 export default function Profile() {
 
@@ -16,7 +16,8 @@ export default function Profile() {
   const [emailErr, setEmailError] = useState(""); 
   const [pwdErr, setPwdErr] = useState(""); 
 
-
+  const [confirm, setConfirm] = useState(false);
+  
   useEffect(() => {
     fetch('/getUser').then(res => res.json()).then(data => {
       setCurUser(data.user);
@@ -77,6 +78,10 @@ export default function Profile() {
       return response.json();
     }).then(function (data){
       console.log(data); 
+      
+      setConfirm(true);
+
+
     });
   }
 
@@ -90,11 +95,10 @@ export default function Profile() {
           Settings
         </div>
         <Form>
-          <Form.Group as={Row} controlId="formEmail">
-            <Form.Label column sm={3}>
+          <Form.Group controlId="formEmail">
+            <Form.Label>
               Email:
             </Form.Label>
-            <Col sm={8}>
               <Form.Control 
               type='email' 
               placeholder="Change Email"
@@ -104,13 +108,11 @@ export default function Profile() {
               <Form.Control.Feedback type = 'invalid'>
                 {emailErr}
               </Form.Control.Feedback>
-            </Col>
           </Form.Group>
-          <Form.Group as={Row} controlId="formPass">
-            <Form.Label column sm={3}>
+          <Form.Group controlId="formPass">
+            <Form.Label >
               Password:
             </Form.Label>
-            <Col sm={8}>
               <Form.Control 
               type='password' 
               placeholder="Change Password"
@@ -119,7 +121,6 @@ export default function Profile() {
               <Form.Control.Feedback type = 'invalid'>
                 {pwdErr}
               </Form.Control.Feedback>
-            </Col>
           </Form.Group>
           <fieldset>
             <Form.Group as={Row}>
@@ -155,6 +156,21 @@ export default function Profile() {
           </Button>
         </div>
       </div>
+
+      <Modal show = {confirm} onHide = {() => setConfirm(false)} size = 'sm' centered>
+        <Modal.Header closeButton>
+          Confirmation
+        </Modal.Header>
+        <Modal.Body>
+          Your settings have been saved!
+        </Modal.Body>
+        <Button onClick = {() => setConfirm(false)}>
+          Close
+        </Button>
+      </Modal>
+      
+
+
     </div>
   );
 }

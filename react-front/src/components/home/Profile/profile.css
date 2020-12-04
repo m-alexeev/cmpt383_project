@@ -20,6 +20,6 @@
     margin: auto;
 }
 
-button{ 
+.saveBtn button{ 
     width: 120px;
-}
+} 

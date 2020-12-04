@@ -176,7 +176,7 @@ export default function CardStax(props) {
                 <Modal.Header closeButton>
                     <Modal.Title>Sort your Notes</Modal.Title>
                 </Modal.Header>
-                <Modal.Body className="show-grid">
+                <Modal.Body >
                     <Container>
                         <Row >
                             <Col xs={6} md={4}>
