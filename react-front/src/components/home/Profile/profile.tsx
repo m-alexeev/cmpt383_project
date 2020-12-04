@@ -13,7 +13,8 @@ export default function Profile() {
   const [email, setEmail] = useState(""); 
   const [pwd, setPwd] = useState(""); 
   const [reminder, setReminder] = useState(false); 
-
+  const [emailErr, setEmailError] = useState(""); 
+  const [pwdErr, setPwdErr] = useState(""); 
 
 
   useEffect(() => {
@@ -27,8 +28,53 @@ export default function Profile() {
 
   // !Change placeholders 
 
-  function verifyForm(){
 
+
+  function validateEmail(){ 
+    if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)) {
+      setEmailError("");
+      return true;
+    }else{
+      setEmailError("Email is Invalid");
+      return false;
+    }
+  }
+
+  function validatePwd(){
+    if (pwd.length < 8) {
+      setPwdErr("Password must be longer than 8 characters");
+      return false;
+    }else{
+      setPwdErr(""); 
+      return true; 
+    } 
+  }
+
+
+
+
+
+
+
+
+
+
+
+  function verifyForm(){
+    console.log("reminder: " + reminder); 
+    console.log("email: " + email); 
+    console.log("pwd: " +  pwd); 
+    
+    if (email.length > 0){
+      var validEmail = validateEmail();
+    }
+    if (pwd.length > 0 ){
+      var validPwd = validatePwd();
+    }
+
+
+
+    
   }
 
 
@@ -43,24 +89,39 @@ export default function Profile() {
         <Form>
           <Form.Group as={Row} controlId="formEmail">
             <Form.Label column sm={3}>
-              Email
+              Email:
             </Form.Label>
             <Col sm={8}>
-              <Form.Control type='email' placeholder="Change Email" />
+              <Form.Control 
+              type='email' 
+              placeholder="Change Email"
+              onChange =  {e => setEmail(e.target.value)}
+              isInvalid = {!!emailErr}
+               />
+              <Form.Control.Feedback type = 'invalid'>
+                {emailErr}
+              </Form.Control.Feedback>
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="formPass">
             <Form.Label column sm={3}>
-              Password
+              Password:
             </Form.Label>
             <Col sm={8}>
-              <Form.Control type='password' placeholder="Change Password" />
+              <Form.Control 
+              type='password' 
+              placeholder="Change Password"
+              onChange = {e => setPwd(e.target.value)}
+              isInvalid = {!!pwdErr} />
+              <Form.Control.Feedback type = 'invalid'>
+                {pwdErr}
+              </Form.Control.Feedback>
             </Col>
           </Form.Group>
           <fieldset>
             <Form.Group as={Row}>
               <Form.Label as='legend' column sm={3}>
-                Reminders
+                Reminders:
               </Form.Label>
               <Col sm={3}>
                 <Form.Check
