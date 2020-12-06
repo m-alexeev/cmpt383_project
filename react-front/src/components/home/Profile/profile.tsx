@@ -78,10 +78,8 @@ export default function Profile() {
       return response.json();
     }).then(function (data){
       console.log(data); 
-      
       setConfirm(true);
-
-
+      setCurUser(data.email);
     });
   }
 
@@ -164,9 +162,11 @@ export default function Profile() {
         <Modal.Body>
           Your settings have been saved!
         </Modal.Body>
+        <div className = "closeBtn">
         <Button onClick = {() => setConfirm(false)}>
           Close
         </Button>
+        </div>
       </Modal>
       
 
