@@ -239,6 +239,7 @@ def updateUser():
         if key == "email":
             user.email = update_req['email']
 
+    session['user'] = user.email
     db.session.commit()
 
 
