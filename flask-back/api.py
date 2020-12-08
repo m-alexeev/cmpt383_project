@@ -53,6 +53,8 @@ class Mood(db.Model):
     def __repr__(self):
         return f"('{self.mood}', '{self.mood_intensity}')"
 
+
+
 @app.route('/login', methods = ['POST'])
 def login():
     req = request.data.decode('utf-8')
@@ -259,16 +261,41 @@ def saveMood():
     req = request.data.decode('utf-8')
     save_req = json.loads(req)
 
+    timestamp = datetime.utcnow()
 
     email = session['user']
     user = User.query.filter_by(email = email).first()
 
     moods = Mood.query.filter_by(user_id= user.id).all()
-    print(moods)
     if len(moods) == 0:
         for mood in save_req:
-            moods.
-    print(save_req)
+            newMood = Mood(user_id=user.id, mood = mood, mood_intensity= save_req[mood], date = timestamp)
+            db.session.add(newMood)
+    else:
+        for mood in save_req: 
+            for savedMood in moods:
+                if mood == savedMood.mood:
+                    savedMood.mood_intensity += save_req[mood]
+        for updatedMood in moods:
+            print(updatedMood)
+
+    db.session.commit()
 
     return jsonify({"Status": "OK"}), 200
     
+
+@app.route('/getMoods', methods = ["GET"])
+def getUserMoods(): 
+   
+    user = User.query.filter_by(email = session['user']).first()
+    
+
+    # class Mood(db.Model):
+    # id = db.Column(db.Integer,primary_key = True)
+    # user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
+    # mood = db.Column(db.String(25), nullable = False)
+    # mood_intensity = db.Column(db.Integer, nullable=  False)
+    # date = db.Column(db.DateTime, nullable = False)
+
+    # def __repr__(self):
+    #     return f"('{self.mood}', '{self.mood_intensity}')"
