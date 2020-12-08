@@ -43,6 +43,14 @@ class Note(db.Model):
     def __repr__(self):
         return f"Note('{self.id}','{self.title}', '{self.content}', '{self.date_created}')"
 
+class Mood(db.Model):
+    id = db.Column(db.Integer,primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
+    mood = db.Column(db.String(25), nullable = False)
+    mood_intensity = db.Column(db.Integer, nullable=  False)
+    date = db.Column(db.DateTime, nullable = False)
+    
+
 
 @app.route('/login', methods = ['POST'])
 def login():
