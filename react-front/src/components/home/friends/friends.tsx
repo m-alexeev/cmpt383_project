@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
-import { createNotEmittedStatement } from 'typescript';
 import NavBar from '../Navbar/navbar'
 
 import './friends.css'
@@ -27,7 +26,6 @@ export default function Friends() {
 
    const history = useHistory();
    const [curUser, setCuruser] = useState("");
-   const [friends, setFriends] = useState([])
 
    const [search, setSearch] = useState("");
 
@@ -96,7 +94,6 @@ export default function Friends() {
 export function Friend(props) {
 
    const user = props.friend; 
-   const username = props.username;
    // const id = props.id;
    // const img = props.img;
 
