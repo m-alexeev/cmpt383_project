@@ -5,6 +5,7 @@ import { Alert, Button, Container, Dropdown, FormControl, InputGroup, Modal } fr
 import { DropdownButton, Row, Col } from 'react-bootstrap';
 
 import './reminder.css'
+import { propTypes } from 'react-bootstrap/esm/Image';
 
 
 
@@ -13,6 +14,7 @@ export default function Tracker() {
 
    const hist = useHistory();
    const [user,setUser] = useState(""); 
+   const [emVals, setEmVals] = useState([0,0,0,0,0,0,0,0,0,0]);
 
    const emotions = [process.env.PUBLIC_URL + "/icons/angry.svg",process.env.PUBLIC_URL + "/icons/anxious.svg",
                      process.env.PUBLIC_URL + "/icons/dissapointed.svg", process.env.PUBLIC_URL + "/icons/evil.svg", 
@@ -21,8 +23,10 @@ export default function Tracker() {
                      process.env.PUBLIC_URL + "/icons/sick.svg",process.env.PUBLIC_URL + "/icons/unamused.svg"]
 
 
-   console.log(emotions[0].split('/').splice(-1)[0].split('.')[0])
-   const emotic = emotions.map((em, index) => <Emotion img = {em} name = {em.split('/').splice(-1)[0].split('.')[0]}></Emotion>);
+   const dict = {0: "angry", 1: "anxious", 2: "dissapointed" , 3: "evil", 4 :"excited", 5:"happy", 6:"sad",
+                  7 : "shy", 8 : "sick", 9:"unamused"}
+
+   const emotic = emotions.map((em, index) => <Emotion key = {index} img = {em} name = {em.split('/').splice(-1)[0].split('.')[0]} onChange = {(val) =>getMood(index,val)}></Emotion>);
 
    useEffect(() => {
       fetch('/getUser').then(res => res.json()).then(data => {
@@ -33,6 +37,13 @@ export default function Tracker() {
        });
    }, []); 
 
+
+   function getMood(index,value){
+      console.log(index,parseInt(value));
+      let temparr = [...emVals];
+      temparr[index] = value
+      setEmVals(temparr)
+   }
 
    return(
       <div className="home-container">
@@ -47,13 +58,21 @@ export default function Tracker() {
                Save Mood
             </Button>
          </div>
+         <div className = 'summary'>
+            
+         </div>
       </div>
    )
 }
 
-function Emotion(prop){
-   var icon = prop.img;
-   var name = prop.name;
+function Emotion(props){
+   var icon = props.img;
+   var name = props.name;
+
+   function handleChange(value){
+      props.onChange(value); 
+   }
+
    return (
       <div className = 'em-cont'>
          <div className = 'emotion'>
@@ -67,7 +86,13 @@ function Emotion(prop){
 
          </div>
          <div className = 'scale'>
-            <input className = 'slider' type = 'range' defaultValue='0' min = '0' max = '10'/>
+            <input 
+               className = 'slider' 
+               type = 'range' 
+               defaultValue='0' 
+               min = '0' 
+               max = '10'
+               onChange = {e => handleChange(e.target.value)} />
          </div>
       </div>
    )
