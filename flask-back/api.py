@@ -50,7 +50,8 @@ class Mood(db.Model):
     mood_intensity = db.Column(db.Integer, nullable=  False)
     date = db.Column(db.DateTime, nullable = False)
 
-
+    def __repr__(self):
+        return f"('{self.mood}', '{self.mood_intensity}')"
 
 @app.route('/login', methods = ['POST'])
 def login():
@@ -258,6 +259,15 @@ def saveMood():
     req = request.data.decode('utf-8')
     save_req = json.loads(req)
 
+
+    email = session['user']
+    user = User.query.filter_by(email = email).first()
+
+    moods = Mood.query.filter_by(user_id= user.id).all()
+    print(moods)
+    if len(moods) == 0:
+        for mood in save_req:
+            moods.
     print(save_req)
 
     return jsonify({"Status": "OK"}), 200

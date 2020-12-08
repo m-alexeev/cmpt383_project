@@ -7,8 +7,9 @@ import './reminder.css'
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
+import am4themes_frozen from '@amcharts/amcharts4/themes/frozen';
 
-
+am4core.useTheme(am4themes_frozen);
 am4core.useTheme(am4themes_animated);
 
 export default function Tracker() {
@@ -16,6 +17,7 @@ export default function Tracker() {
    const hist = useHistory();
    const [user, setUser] = useState("");
    const [emVals, setEmVals] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+   const [userVal, setUserVal] = useState({"anger":0 ,"surprise": 0, "happines":0, "sadness":0, "fear":0,"digust":0});
    const chart = useRef(am4charts.XYChart);
 
    const emotions = [process.env.PUBLIC_URL + "/icons/anger.svg", process.env.PUBLIC_URL + "/icons/surprise.svg",
@@ -31,56 +33,32 @@ export default function Tracker() {
       });
    }, []);
 
-   useLayoutEffect(() => {
+   useEffect(() => {
       let x = am4core.create("chartdiv", am4charts.XYChart);
 
-      x.paddingRight = 20;
-
-
+      x.paddingRight = 0;
 
       // Add data
-      x.data = [{
-         "country": "USA",
-         "visits": 2025
-      }, {
-         "country": "China",
-         "visits": 1882
-      }, {
-         "country": "Japan",
-         "visits": 1809
-      }, {
-         "country": "Germany",
-         "visits": 1322
-      }, {
-         "country": "UK",
-         "visits": 1122
-      }, {
-         "country": "UK",
-         "visits": 1122
-      }];
-
-
+      for (var key in userVal){
+         x.data.push({"mood": key,
+                     "score": userVal[key]})
+      }
+  
+      //* Code taken from amcharts documentation and altered to fit desired scenario
       // Create axes
-
       var categoryAxis = x.xAxes.push(new am4charts.CategoryAxis());
-      categoryAxis.dataFields.category = "country";
+      categoryAxis.dataFields.category = "mood";
       categoryAxis.renderer.grid.template.location = 0;
       categoryAxis.renderer.minGridDistance = 30;
 
-      categoryAxis.renderer.labels.template.adapter.add("dy", function (dy, target) {
-         if (target.dataItem && target.dataItem.index && typeof(dy) != 'undefined' ) {
-            return dy + 25;
-         }
-         return dy;
-      });
-     
+  
       var valueAxis = x.yAxes.push(new am4charts.ValueAxis());
 
       // Create series
       var series = x.series.push(new am4charts.ColumnSeries());
-      series.dataFields.valueY = "visits";
-      series.dataFields.categoryX = "country";
-      series.name = "Visits";
+      series.dataFields.valueY = "score";
+      series.dataFields.categoryX = "mood";
+      series.name = "score";
       series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/]";
       series.columns.template.fillOpacity = .8;
       
@@ -90,7 +68,7 @@ export default function Tracker() {
 
 
 
-   }, []);
+   }, [userVal]);
 
 
    function getMood(index, value) {
@@ -105,7 +83,7 @@ export default function Tracker() {
          method: 'post',
          body: JSON.stringify({ "anger": emVals[0], "surprise": emVals[1], "hapiness": emVals[2], "sadness": emVals[3], "fear": emVals[4], "disgust": emVals[5] })
       }).then(res => {
-         res.json();
+         return res.json()
       }).then(data => {
          console.log(data)
       });
@@ -131,7 +109,7 @@ export default function Tracker() {
                   </Button>
          </div>
          <div className= 'chart'>
-            <div className='chartdiv' style={{ width: "100%", height: "500px" }}/>
+            <div className='chartdiv' style={{ width: "80%", height: "500px" }}/>
          </div>
       </div>
    )

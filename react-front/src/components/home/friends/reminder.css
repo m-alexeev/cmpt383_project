@@ -115,10 +115,12 @@
 
 .chart{
   background-color: aliceblue;
-  margin: auto;
-
+  padding: 15px 0 ;
 }
 
+.chartdiv{
+  margin: auto;
+}
 
 
 
