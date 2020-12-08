@@ -14,13 +14,11 @@ export default function Tracker() {
    const [emVals, setEmVals] = useState([0,0,0,0,0,0,0,0,0,0]);
 
    const emotions = [process.env.PUBLIC_URL + "/icons/anger.svg",process.env.PUBLIC_URL + "/icons/surprise.svg",
-                     process.env.PUBLIC_URL + "/icons/happiness.svg",process.env.PUBLIC_URL + "/icons/sadness.svg",process.env.PUBLIC_URL + "/icons/shy.svg",
+                     process.env.PUBLIC_URL + "/icons/hapiness.svg",process.env.PUBLIC_URL + "/icons/sadness.svg",
                      process.env.PUBLIC_URL + "/icons/fear.svg",process.env.PUBLIC_URL + "/icons/disgust.svg"]
 
 
-   const dict = {0: "angry", 1: "surprise", 2: "hapiness" , 3: "sadness", 4 :"fear", 5:"disgust"}
 
-   const emotic = emotions.map((em, index) => <Emotion key = {index} img = {em} name = {em.split('/').splice(-1)[0].split('.')[0]} onChange = {(val) =>getMood(index,val)}></Emotion>);
 
    useEffect(() => {
       fetch('/getUser').then(res => res.json()).then(data => {
@@ -29,7 +27,7 @@ export default function Tracker() {
            hist.push('login');
          }
        });
-   }, [emVals]);
+   }, []);
 
    function getMood(index,value){
       let temparr = [...emVals];
@@ -39,10 +37,20 @@ export default function Tracker() {
 
 
    function saveMood(){
-      fetch('/saveMood').then(res => res.json()).then(data => {
-         console.log(data);
-      })
+
+      fetch('/saveMood', {
+         method: 'post',
+         body : JSON.stringify({"anger":emVals[0], "surprise":emVals[1],"hapiness":emVals[2], "sadness":emVals[3], "fear":emVals[4], "disgust":emVals[5]})
+      }).then(res =>{
+         res.json();
+      }).then(data =>{
+         console.log(data)
+      });
    }
+
+
+   const emotic = emotions.map((em, index) => <Emotion key = {index} img = {em} name = {em.split('/').splice(-1)[0].split('.')[0]} onChange = {(val) =>getMood(index,val)}></Emotion>);
+
 
    return(
       <div className="home-container">
@@ -53,7 +61,7 @@ export default function Tracker() {
                   {emotic}
                </div>
             </div>
-            <Button onClick = {()=> saveMood}>
+            <Button onClick = {()=> saveMood()}>
                Save Mood
             </Button>
          </div>

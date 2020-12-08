@@ -49,7 +49,7 @@ class Mood(db.Model):
     mood = db.Column(db.String(25), nullable = False)
     mood_intensity = db.Column(db.Integer, nullable=  False)
     date = db.Column(db.DateTime, nullable = False)
-    
+
 
 
 @app.route('/login', methods = ['POST'])
@@ -249,7 +249,16 @@ def updateUser():
 
     session['user'] = user.email
     db.session.commit()
-
-
     return jsonify({"status": "Updated", 'email':user.email}), 200
+
+
+
+@app.route('/saveMood',methods = ["POST"])
+def saveMood():
+    req = request.data.decode('utf-8')
+    save_req = json.loads(req)
+
+    print(save_req)
+
+    return jsonify({"Status": "OK"}), 200
     
