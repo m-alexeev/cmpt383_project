@@ -40,11 +40,8 @@ class Note(db.Model):
     date_created = db.Column(db.DateTime, nullable = False, default = datetime.utcnow)
     content = db.Column(db.Text, nullable = False)
     
-
-
     def __repr__(self):
         return f"Note('{self.id}','{self.title}', '{self.content}', '{self.date_created}')"
-
 
 
 @app.route('/login', methods = ['POST'])
@@ -227,5 +224,24 @@ def updateUser():
 
     print (update_req)
 
-    return jsonify({}), 200
+
+    user = User.query.filter_by(email = session['user']).first()
+    for key in update_req.keys():
+        if key == "rem":
+            continue
+        if key ==  "pwd":
+            salt = 'bounce'
+            pwd = update_req['pwd'] + salt        
+            hashedPwd = hashlib.md5(pwd.encode())
+            hashedPwd = hashedPwd.hexdigest()
+            #* Update Pwd        
+            user.password = hashedPwd
+        if key == "email":
+            user.email = update_req['email']
+
+    session['user'] = user.email
+    db.session.commit()
+
+
+    return jsonify({"status": "Updated", 'email':user.email}), 200
     

@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import LoginPage from './components/login/login';
 import RegisterPage from './components/register/register';
-import Friends from './components/home/friends/friends';
+import Reminder from './components/home/friends/reminder';
 import Profile from './components/home/Profile/profile';
 //Router 
 import {
@@ -26,7 +26,7 @@ function App() {
             <RegisterPage/>
           </Route>
           <Route path ="/reminder">
-            <Friends/>
+            <Reminder/>
           </Route>
           <Route path = "/profile">
             <Profile/>
