@@ -48,6 +48,7 @@ class Mood(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
     mood = db.Column(db.String(25), nullable = False)
     mood_intensity = db.Column(db.Integer, nullable=  False)
+    counter = db.Column(db.Integer, nullable = False)
     date = db.Column(db.DateTime, nullable = False)
 
     def __repr__(self):
@@ -269,13 +270,15 @@ def saveMood():
     moods = Mood.query.filter_by(user_id= user.id).all()
     if len(moods) == 0:
         for mood in save_req:
-            newMood = Mood(user_id=user.id, mood = mood, mood_intensity= save_req[mood], date = timestamp)
+            newMood = Mood(user_id=user.id, mood = mood, mood_intensity= save_req[mood], counter = 0 ,date = timestamp)
             db.session.add(newMood)
     else:
         for mood in save_req: 
             for savedMood in moods:
-                if mood == savedMood.mood:
-                    savedMood.mood_intensity += save_req[mood]
+                if mood == savedMood.mood and save_req[mood] > 0:
+                    savedMood.counter += 1
+                    savedMood.mood_intensity = int((savedMood.mood_intensity + save_req[mood])/savedMood.counter)                   
+
         for updatedMood in moods:
             print(updatedMood)
 
