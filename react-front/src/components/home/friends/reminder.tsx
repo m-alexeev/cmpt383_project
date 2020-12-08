@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import NavBar from '../Navbar/navbar'
-import { Alert, Button, Container, Dropdown, FormControl, InputGroup, Modal } from 'react-bootstrap';
-import { DropdownButton, Row, Col } from 'react-bootstrap';
-
+import {Button} from 'react-bootstrap'
 import './reminder.css'
-import { propTypes } from 'react-bootstrap/esm/Image';
 
 
 
@@ -16,15 +13,12 @@ export default function Tracker() {
    const [user,setUser] = useState(""); 
    const [emVals, setEmVals] = useState([0,0,0,0,0,0,0,0,0,0]);
 
-   const emotions = [process.env.PUBLIC_URL + "/icons/angry.svg",process.env.PUBLIC_URL + "/icons/anxious.svg",
-                     process.env.PUBLIC_URL + "/icons/dissapointed.svg", process.env.PUBLIC_URL + "/icons/evil.svg", 
-                     process.env.PUBLIC_URL + "/icons/excited.svg", process.env.PUBLIC_URL + "/icons/happy.svg",
-                     process.env.PUBLIC_URL + "/icons/sad.svg",process.env.PUBLIC_URL + "/icons/shy.svg",
-                     process.env.PUBLIC_URL + "/icons/sick.svg",process.env.PUBLIC_URL + "/icons/unamused.svg"]
+   const emotions = [process.env.PUBLIC_URL + "/icons/anger.svg",process.env.PUBLIC_URL + "/icons/surprise.svg",
+                     process.env.PUBLIC_URL + "/icons/happiness.svg",process.env.PUBLIC_URL + "/icons/sadness.svg",process.env.PUBLIC_URL + "/icons/shy.svg",
+                     process.env.PUBLIC_URL + "/icons/fear.svg",process.env.PUBLIC_URL + "/icons/disgust.svg"]
 
 
-   const dict = {0: "angry", 1: "anxious", 2: "dissapointed" , 3: "evil", 4 :"excited", 5:"happy", 6:"sad",
-                  7 : "shy", 8 : "sick", 9:"unamused"}
+   const dict = {0: "angry", 1: "surprise", 2: "hapiness" , 3: "sadness", 4 :"fear", 5:"disgust"}
 
    const emotic = emotions.map((em, index) => <Emotion key = {index} img = {em} name = {em.split('/').splice(-1)[0].split('.')[0]} onChange = {(val) =>getMood(index,val)}></Emotion>);
 
@@ -35,14 +29,19 @@ export default function Tracker() {
            hist.push('login');
          }
        });
-   }, []); 
-
+   }, [emVals]);
 
    function getMood(index,value){
-      console.log(index,parseInt(value));
       let temparr = [...emVals];
-      temparr[index] = value
+      temparr[index] = parseInt(value)
       setEmVals(temparr)
+   }
+
+
+   function saveMood(){
+      fetch('/saveMood').then(res => res.json()).then(data => {
+         console.log(data);
+      })
    }
 
    return(
@@ -54,7 +53,7 @@ export default function Tracker() {
                   {emotic}
                </div>
             </div>
-            <Button>
+            <Button onClick = {()=> saveMood}>
                Save Mood
             </Button>
          </div>
