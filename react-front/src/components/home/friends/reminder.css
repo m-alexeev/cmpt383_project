@@ -122,7 +122,19 @@
   margin: auto;
 }
 
+.savebtn{
+  width: 120px;
+  margin: auto;
+}
 
+.savebtn button{
+  width: 100%;
+  margin: 10px auto;
+}
+
+.chart h3{
+  text-align: center;
+}
 
 input[type=range].slider {
   width: 100%;

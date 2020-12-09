@@ -12,14 +12,12 @@ import go_module
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 app.config['SECRET_KEY'] = 'd2047e924a7c6e4f34f8134e17c7e66f'
-#app.config['SERVER_NAME'] = 'flask-api:5000'
+app.config['SERVER_NAME'] = 'flask-api:5000'
 db = SQLAlchemy(app)
 
 
 db.create_all()
 
-if  __name__ == '__main__':
-    app.run(host="127.0.0.1", debug=True)
 
 
 class User(db.Model):
@@ -301,3 +299,8 @@ def getUserMoods():
         moods_arr.append({mood.mood: mood.mood_intensity})    
 
     return jsonify({"moods": moods_arr}),200
+
+
+
+if  __name__ == '__main__':
+    app.run(host="0.0.0.0", debug=True)

@@ -40,7 +40,6 @@ export default function Tracker() {
 
       x.paddingRight = 0;
       // Add data
-      console.log(userVal)
       for (var key in userVal){
          x.data.push({"mood": key,
                      "score": userVal[key]})
@@ -87,11 +86,6 @@ export default function Tracker() {
       });
    }
 
-   useEffect(() => {
-      for (let k in userVal){
-         console.log(k, userVal[k]);
-      }
-   }, [userVal])
 
    function getMood(index, value) {
       let temparr = [...emVals];
@@ -127,11 +121,14 @@ export default function Tracker() {
                   {emotic}
                </div>
             </div>
-            <Button onClick={() => saveMood()}>
-               Save Mood
-            </Button>
+            <div className='savebtn'>
+               <Button onClick={() => saveMood()}>
+                  Save Mood
+               </Button>
+            </div>
          </div>
          <div className= 'chart'>
+            <h3>Mood Averages</h3>
             <div className='chartdiv' style={{ width: "80%", height: "500px" }}/>
          </div>
       </div>
