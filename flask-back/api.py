@@ -49,6 +49,7 @@ class Mood(db.Model):
     mood = db.Column(db.String(25), nullable = False)
     mood_intensity = db.Column(db.Integer, nullable=  False)
     counter = db.Column(db.Integer, nullable = False)
+    total = db.Column(db.Integer, nullable = False)
     date = db.Column(db.DateTime, nullable = False)
 
     def __repr__(self):
@@ -270,14 +271,15 @@ def saveMood():
     moods = Mood.query.filter_by(user_id= user.id).all()
     if len(moods) == 0:
         for mood in save_req:
-            newMood = Mood(user_id=user.id, mood = mood, mood_intensity= save_req[mood], counter = 0 ,date = timestamp)
+            newMood = Mood(user_id=user.id, mood = mood, mood_intensity = save_req[mood] ,date = timestamp)
             db.session.add(newMood)
     else:
         for mood in save_req: 
             for savedMood in moods:
                 if mood == savedMood.mood and save_req[mood] > 0:
                     savedMood.counter += 1
-                    savedMood.mood_intensity = int((savedMood.mood_intensity + save_req[mood])/savedMood.counter)                   
+                    savedMood.mood_intensity = int((savedMood.total + save_req[mood])/savedMood.counter)
+                    savedMood.total += save_req[mood]                   
 
         for updatedMood in moods:
             print(updatedMood)
@@ -291,14 +293,11 @@ def saveMood():
 def getUserMoods(): 
    
     user = User.query.filter_by(email = session['user']).first()
-    
+    moods = Mood.query.filter_by(user_id = user.id).all()
 
-    # class Mood(db.Model):
-    # id = db.Column(db.Integer,primary_key = True)
-    # user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
-    # mood = db.Column(db.String(25), nullable = False)
-    # mood_intensity = db.Column(db.Integer, nullable=  False)
-    # date = db.Column(db.DateTime, nullable = False)
+    moods_arr = []
 
-    # def __repr__(self):
-    #     return f"('{self.mood}', '{self.mood_intensity}')"
+    for mood in moods:
+        moods_arr.append({mood.mood: mood.mood_intensity})    
+
+    return jsonify({"moods": moods_arr}),200

@@ -17,7 +17,7 @@ export default function Tracker() {
    const hist = useHistory();
    const [user, setUser] = useState("");
    const [emVals, setEmVals] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
-   const [userVal, setUserVal] = useState({"anger":0 ,"surprise": 0, "happines":0, "sadness":0, "fear":0,"digust":0});
+   const [userVal, setUserVal] = useState({"anger":0 ,"surprise": 0, "hapiness":0, "sadness":0, "fear":0,"disgust":0});
    const chart = useRef(am4charts.XYChart);
 
    const emotions = [process.env.PUBLIC_URL + "/icons/anger.svg", process.env.PUBLIC_URL + "/icons/surprise.svg",
@@ -31,19 +31,20 @@ export default function Tracker() {
             hist.push('login');
          }
       });
+
+      updateMoods();
    }, []);
 
    useEffect(() => {
       let x = am4core.create("chartdiv", am4charts.XYChart);
 
       x.paddingRight = 0;
-
+      console.log(userVal)
       // Add data
       for (var key in userVal){
          x.data.push({"mood": key,
                      "score": userVal[key]})
       }
-  
       //* Code taken from amcharts documentation and altered to fit desired scenario
       // Create axes
       var categoryAxis = x.xAxes.push(new am4charts.CategoryAxis());
@@ -70,6 +71,22 @@ export default function Tracker() {
 
    }, [userVal]);
 
+   function updateMoods(){
+      fetch('/getMoods').then(res => {
+         return res.json()
+      }).then(data =>{
+         let arr = data['moods'];
+         var dict = userVal;
+         arr.forEach(element => {
+            for (var key in element){
+               dict[key] = element[key]
+            }
+         });
+         setUserVal(dict)
+      });
+   }
+
+   
 
    function getMood(index, value) {
       let temparr = [...emVals];
@@ -85,8 +102,9 @@ export default function Tracker() {
       }).then(res => {
          return res.json()
       }).then(data => {
-         console.log(data)
       });
+
+      updateMoods();
    }
 
    const emotic = emotions.map((em, index) => <Emotion key={index} img={em} name={em.split('/').splice(-1)[0].split('.')[0]} onChange={(val) => getMood(index, val)}></Emotion>);
@@ -106,7 +124,7 @@ export default function Tracker() {
             </div>
             <Button onClick={() => saveMood()}>
                Save Mood
-                  </Button>
+            </Button>
          </div>
          <div className= 'chart'>
             <div className='chartdiv' style={{ width: "80%", height: "500px" }}/>
