@@ -39,11 +39,12 @@ export default function Tracker() {
       let x = am4core.create("chartdiv", am4charts.XYChart);
 
       x.paddingRight = 0;
-      console.log(userVal)
       // Add data
+      console.log(userVal)
       for (var key in userVal){
          x.data.push({"mood": key,
                      "score": userVal[key]})
+                     
       }
       //* Code taken from amcharts documentation and altered to fit desired scenario
       // Create axes
@@ -82,11 +83,15 @@ export default function Tracker() {
                dict[key] = element[key]
             }
          });
-         setUserVal(dict)
+         setUserVal({...dict})
       });
    }
 
-   
+   useEffect(() => {
+      for (let k in userVal){
+         console.log(k, userVal[k]);
+      }
+   }, [userVal])
 
    function getMood(index, value) {
       let temparr = [...emVals];
