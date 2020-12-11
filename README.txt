@@ -1,6 +1,14 @@
+##Running Instructions
+    
+The docker-compose file is in the `deploy` folder
+`docker-compose build` to build the application
+`docker-compose up` to run the application
 
-The docker-compose file is in the deploy folder
+The application is hosted on `localhost:3000`
 
+
+
+##Overview
 Topic : Note taking and emotion tracker application
 
 Programming languages : 
