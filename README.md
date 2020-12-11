@@ -1,10 +1,10 @@
 ## Running Instructions
     
-The docker-compose file is in the `deploy` folder
-`docker-compose build` to build the application
-`docker-compose up` to run the application
+The docker-compose file is in the `deploy` folder <br>
+`docker-compose build` to build the application   <br>
+`docker-compose up` to run the application        <br>
 
-The application is hosted on `localhost:3000`
+The application is hosted on `localhost:3000`     <br>
 
 
 
